@@ -1,6 +1,7 @@
 import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import User from '#models/user'
+import Modulo from '#models/modulo'
 
 export default class Permiso extends BaseModel {
 static table = 'Permisos'
@@ -35,15 +36,17 @@ static table = 'Permisos'
 @column ({ columnName: 'Menu' })
 declare Menu: String
   
-  @hasOne(() => User, {
-    localKey: 'idUsuario',
-    foreignKey: 'Id'
-  })
-  declare user: HasOne<typeof User>
+@hasOne(() => User, {
+  localKey: 'idUsuario',
+  foreignKey: 'Id'
+})
+declare user: HasOne<typeof User>
 
-  @hasOne(() => Modulo, {
-    localKey: 'idUsuario',
-    foreignKey: 'Id'
-  })
-  declare user: HasOne<typeof User>
+@hasOne(() => Modulo, {
+  localKey: 'idModulo',
+  foreignKey: 'Id'
+})
+declare modulo: HasOne<typeof Modulo> 
+
+
 }

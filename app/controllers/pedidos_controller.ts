@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Pedidos from '#models/pedidos'
 export default class PedidosController {
-  
+
 
     async index({ response }: HttpContext) {
         try {
@@ -39,8 +39,12 @@ export default class PedidosController {
 
     async updateAnulado({ params, response }: HttpContext) {
         const pedido = await Pedidos.findOrFail(params.id)
-        pedido.Anulado = true
-        await pedido.save()
-        return response.ok(pedido)
+        try {
+            pedido.Anulado = true
+            await pedido.save()
+            return response.ok(pedido)
+        } catch (error) {
+            return response.internalServerError({ message: 'Error updating order', error })
+        }
     }
 }

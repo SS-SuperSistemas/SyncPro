@@ -31,12 +31,19 @@ async show({ params, response }: HttpContext) {
 
 
 async getPermisosByModulo({ request, response }: HttpContext) {
-    try {
-        const {idModulo, idUsuario} = await request.only(['idModulo','idUsuario'])
-        const permiso = await Permisos.query().where('IdModulo',idModulo).andWhere('IdUsuario',idUsuario)
+        try {
+        const {nombreModulo, idUsuario} = request.only(['nombreModulo','idUsuario'])
+        console.log({nombreModulo, idUsuario})
+        const permiso = await Permisos.query().whereHas('modulo', (query) => {
+            query.where('Nombre', nombreModulo)
+        })
+        .andWhere('IdUsuario', idUsuario).first()
         return response.ok(permiso)
     } catch (error) {
+        console.log(error)
         return response.internalServerError({ message: 'Error fetching permission', error })
     }
 }
+
+
 }

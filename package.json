@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
-    "dev": "node ace serve --hmr",
+    "dev": "nodemon ace serve --hmr",
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -45,6 +45,7 @@
     "@types/node": "^22.5.1",
     "eslint": "^9.9.1",
     "hot-hook": "^0.2.6",
+    "nodemon": "^3.1.7",
     "pino-pretty": "^11.2.2",
     "prettier": "^3.3.3",
     "ts-node-maintained": "^10.9.4",

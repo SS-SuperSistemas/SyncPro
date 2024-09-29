@@ -23,6 +23,8 @@ import RangoPrecioController from '#controllers/rango_precio_productos_controlle
 import DetalleVentasController from '#controllers/detalle_ventas_controller'
 import PermisosController from '#controllers/permisos_controller'
 import ModulosController from '#controllers/modulos_controller'
+import ProveedoresController from '#controllers/proveedores_controller'
+import BodegasController from '#controllers/bodegas_controller'
 import router from '@adonisjs/core/services/router'
 
 
@@ -171,6 +173,24 @@ router
     router.get('/:id', [ModulosController, 'show'])
   })
   .prefix('modulo')
+
+  router
+  .group(() => {
+    router.get('/', [ProveedoresController, 'index'])
+    router.post('/', [ProveedoresController, 'store'])
+    router.get('/:id', [ProveedoresController, 'show'])
+    router.put('/:id', [ProveedoresController, 'updateInHabilitado'])
+  })
+  .prefix('proveedor')
+
+
+  router
+  .group(() => {
+    router.get('/', [BodegasController, 'index'])
+    router.post('/', [BodegasController, 'store'])
+    router.get('/:id', [BodegasController, 'show'])
+  })
+  .prefix('bodega')
 
   
 
