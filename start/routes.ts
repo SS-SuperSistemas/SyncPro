@@ -24,6 +24,7 @@ import DetalleVentasController from '#controllers/detalle_ventas_controller'
 import PermisosController from '#controllers/permisos_controller'
 import ModulosController from '#controllers/modulos_controller'
 import router from '@adonisjs/core/services/router'
+import MovCajasController from '#controllers/movcajas_controller'
 
 
 router.get('/', async () => {
@@ -171,6 +172,15 @@ router
     router.get('/:id', [ModulosController, 'show'])
   })
   .prefix('modulo')
+
+  router
+  .group(() => {
+    router.get('/', [MovCajasController, 'index'])
+    router.post('/', [MovCajasController, 'store'])
+    router.get('/:id', [MovCajasController, 'show'])
+    router.put('/:id', [MovCajasController, 'updateAnulado'])
+  })
+  .prefix('movcajas')
 
   
 
