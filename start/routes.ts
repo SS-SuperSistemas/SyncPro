@@ -26,6 +26,13 @@ import ModulosController from '#controllers/modulos_controller'
 import router from '@adonisjs/core/services/router'
 import MovCajasController from '#controllers/movcajas_controller'
 import ConfigsController from '#controllers/configs_controller'
+import ArqueoCajasController from '#controllers/arqueo_cajas_controller'
+import ArqueoChequesController from '#controllers/arqueo_cheques_controller'
+import ArqueoEfectivosController from '#controllers/arqueo_efectivos_controller'
+import ArqueoTarjetasController from '#controllers/arqueo_tarjetas_controller'
+import CierreCajasController from '#controllers/cierre_cajas_controller'
+import AbonoApartadosController from '#controllers/abono_apartados_controller'
+import AbonoPagarsController from '#controllers/abono_pagars_controller'
 
 
 router.get('/', async () => {
@@ -192,6 +199,69 @@ router
   })
   .prefix('config')
   
+
+  router
+  .group(() => {
+    router.get('/', [ArqueoCajasController, 'index'])
+    router.post('/', [ArqueoCajasController, 'store'])
+    router.get('/:id', [ArqueoCajasController, 'show'])
+    router.put('/:id', [ArqueoCajasController, 'updateAnulado'])
+  })
+  .prefix('arqueo_caja')  
+
+  router
+  .group(() => {
+    router.get('/', [ArqueoChequesController, 'index'])
+    router.post('/', [ArqueoChequesController, 'store'])
+    router.get('/:id', [ArqueoChequesController, 'show'])
+    })
+  .prefix('arqueo_cheque')
+
+  router
+  .group(() => {
+    router.get('/', [ArqueoEfectivosController, 'index'])
+    router.post('/', [ArqueoEfectivosController, 'store'])
+    router.get('/:id', [ArqueoEfectivosController, 'show'])
+  })
+  .prefix('arqueo_efectivo')
+
+  router
+  .group(() => {
+    router.get('/', [ArqueoTarjetasController, 'index'])
+    router.post('/', [ArqueoTarjetasController, 'store'])
+    router.get('/:id', [ArqueoTarjetasController, 'show'])
+  })
+  .prefix('arqueo_tarjeta')
+
+  router
+  .group(() => {
+    router.get('/', [CierreCajasController, 'index'])
+    router.post('/', [CierreCajasController, 'store'])
+    router.get('/:id', [CierreCajasController, 'show'])
+    router.put('/:id', [CierreCajasController, 'updateAnulado'])
+  })
+  .prefix('cierre_caja')
+
+  router
+  .group(() => {
+    router.get('/', [AbonoApartadosController, 'index'])
+    router.post('/', [AbonoApartadosController, 'store'])
+    router.get('/:id', [AbonoApartadosController, 'show'])
+    router.put('/:id', [AbonoApartadosController, 'updateAnulado'])
+  })
+  .prefix('abono_apartado')
+
+  router
+  .group(() => {
+    router.get('/', [AbonoPagarsController, 'index'])
+    router.post('/', [AbonoPagarsController, 'store'])
+    router.get('/:id', [AbonoPagarsController, 'show'])
+    router.put('/:id', [AbonoPagarsController, 'updateAnulado'])
+  })
+  .prefix('abono_pagar')
+
+
+
 
   
 
