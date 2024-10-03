@@ -33,6 +33,8 @@ import ArqueoTarjetasController from '#controllers/arqueo_tarjetas_controller'
 import CierreCajasController from '#controllers/cierre_cajas_controller'
 import AbonoApartadosController from '#controllers/abono_apartados_controller'
 import AbonoPagarsController from '#controllers/abono_pagars_controller'
+import AbonosCobrarsController from '#controllers/abonos_cobrars_controller'
+import LocalidadsController from '#controllers/localidads_controller'
 
 
 router.get('/', async () => {
@@ -137,7 +139,6 @@ router
   })
   .prefix('empresa')
   
-
 router
   .group(() => {
     router.get('/', [VentasController, 'index'])
@@ -161,7 +162,6 @@ router
     router.get('/:id', [DetalleVentasController, 'show'])
   })
   .prefix('detalle_venta')
-
 
   router
   .group(() => {
@@ -190,7 +190,6 @@ router
   })
   .prefix('movcajas')
 
-
   router
   .group(() => {
     router.get('/', [ConfigsController, 'index'])
@@ -199,7 +198,6 @@ router
   })
   .prefix('config')
   
-
   router
   .group(() => {
     router.get('/', [ArqueoCajasController, 'index'])
@@ -259,6 +257,31 @@ router
     router.put('/:id', [AbonoPagarsController, 'updateAnulado'])
   })
   .prefix('abono_pagar')
+
+  router
+  .group(() => {
+    router.get('/', [AbonosCobrarsController, 'index'])
+    router.post('/', [AbonosCobrarsController, 'store'])
+    router.get('/:id', [AbonosCobrarsController, 'show'])
+    router.put('/:id', [AbonosCobrarsController, 'updateAnulado'])
+  })
+  .prefix('abono_cobrar')
+
+  router
+  .group(() => {
+    router.get('/', [LocalidadsController, 'index'])
+    router.post('/', [LocalidadsController, 'store'])
+    router.get('/:id', [LocalidadsController, 'show'])
+  })
+  .prefix('localidad')
+
+  
+
+
+
+
+
+
 
 
 

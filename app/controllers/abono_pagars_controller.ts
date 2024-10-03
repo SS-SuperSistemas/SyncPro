@@ -12,36 +12,23 @@ export default class AbonoPagarsController {
         }
     }
 
-    // async store({ request, response }: HttpContext) {
-    //     const data = request.only(['Id', 'Fecha', 'CodProveedor', 'IdUsuario', 'SaldoCuenta', 
-    //         'Monto', 'SaldoActual', 'Anulado', 'CodMoneda', 'TipoCambio', 'MontoLetras', 
-    //         'FechaEntrada', 'Observacion', 'NumRecibo', 'FondoCaja', 'IdMov'])
-    //     try {
-    //         const registros = await AbonoPagar.create(data)
-    //         return response.created({ message: 'Record created successfully', registros })
-    //     } catch (error) {
-    //         console.log(error)
-    //         return response.internalServerError({ message: 'Error creating record', error })
-    //     }
-    // }
-
     async store({ request, response }: HttpContext) {
         const data = request.only([
-             'Fecha', 'CodProveedor', 'IdUsuario', 'SaldoCuenta', 
-             'Monto', 'SaldoActual', 'Anulado', 'CodMoneda', 'TipoCambio', 'MontoLetras', 
-             'FechaEntrada', 'Observacion', 'NumRecibo', 'FondoCaja', 'IdMov' // Cambié Idbanco a IdBanco
+            'Fecha', 'CodProveedor', 'IdUsuario', 'SaldoCuenta',
+            'Monto', 'SaldoActual', 'Anulado', 'CodMoneda', 'TipoCambio', 'MontoLetras',
+            'FechaEntrada', 'Observacion', 'NumRecibo', 'FondoCaja', 'IdMov' // Cambié Idbanco a IdBanco
         ]);
-    
+
         try {
             console.log('Datos a insertar:', data); // Agregar console.log para verificar datos
-    
+
             await db.rawQuery(
                 `INSERT INTO AbonoPagar (Fecha, CodProveedor, IdUsuario, SaldoCuenta, 
             Monto, SaldoActual, Anulado, CodMoneda, TipoCambio, MontoLetras, 
              FechaEntrada, Observacion, NumRecibo, FondoCaja, IdMov) 
                  VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
-                
+
                     data.Fecha,
                     data.CodProveedor,
                     data.IdUsuario,
@@ -57,10 +44,10 @@ export default class AbonoPagarsController {
                     data.NumRecibo,
                     data.FondoCaja,
                     data.IdMov
-                    
+
                 ]
             );
-    
+
             return response.created({ message: 'Movimiento creado exitosamente' });
         } catch (error) {
             console.log('Error al insertar:', error); // Proporcionar un mensaje de error más claro

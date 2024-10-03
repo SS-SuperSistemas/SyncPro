@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class Pedido extends BaseModel {
+export default class Pedidos extends BaseModel {
 static table = 'Pedidos'
 
 
@@ -32,7 +32,7 @@ static table = 'Pedidos'
   @column({ columnName: 'Anulado' })
   declare Anulado: Boolean
 
-  @column({ columnName: 'IdVendedor' })
-  declare IdVendedor: Number
+  @column({ columnName: 'idVendedor' })
+  declare idVendedor: Number
 
 }

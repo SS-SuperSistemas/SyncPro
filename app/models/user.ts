@@ -67,8 +67,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ columnName: 'EsEncargado' })
   declare EsEncargado: Boolean
 
-  @column({ columnName: 'IdCajero' })
-  declare IdCajero: Number
+  @column({ columnName: 'IdEncargado' })
+  declare IdEncargado: Number
 
   @column({ columnName: 'pass_user' })
   declare pass_user: String

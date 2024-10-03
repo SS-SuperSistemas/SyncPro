@@ -2,12 +2,45 @@ import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 export default class AbonosCobrar extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
+  static table = 'AbonosCobrar'
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+  @column({ isPrimary: true, columnName: 'IdRecibo' })
+  declare IdRecibo: number
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
+  @column({ columnName: 'NumRecibo' })
+  declare NumRecibo: number
+
+  @column({ columnName: 'CodCliente' })
+  declare CodCliente: number
+
+  @column({ columnName: 'SaldoAnt' })
+  declare SaldoAnt: number
+  
+  @column({ columnName: 'Abono' })
+  declare Abono: number
+  
+  @column({ columnName: 'SaldoAct' })
+  declare SaldoAct: number
+  
+  @column({ columnName: 'Fecha' })
+  declare Fecha: Date
+  
+  @column({ columnName: 'Observaciones' })
+  declare Observaciones: string
+  
+  @column({ columnName: 'Anulado' })
+  declare Anulado: boolean
+  
+  @column({ columnName: 'IdUsuario' })
+  declare IdUsuario: number
+  
+  @column({ columnName: 'CodMoneda' })
+  declare CodMoneda: number
+  
+  @column({ columnName: 'TipoCambio' })
+  declare TipoCambio: number
+  
+  @column({ columnName: 'Hora' })
+  declare Hora: DateTime
+  
 }
