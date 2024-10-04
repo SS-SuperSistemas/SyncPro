@@ -60,7 +60,6 @@ router
 
 router
   .group(() => {
-
     router.get('/', [UserController, 'index'])
     router.post('/', [UserController, 'store'])
     router.get('/:id', [UserController, 'show'])
@@ -74,6 +73,8 @@ router
     router.post('/', [ClientesController, 'store'])
     router.get('/:id', [ClientesController, 'show'])
     router.put('/:id', [ClientesController, 'updateInhabilitado'])
+    router.get('/vendedor/:idAgente', [ClientesController, 'clientesPorVendedor'])
+    router.get('/localidad/:idLocalidad', [ClientesController, 'clientesPorLocalidad'])
   })
   .prefix('cliente')
 
@@ -88,12 +89,11 @@ router
 
 router
   .group(() => {
-
     router.get('/', [InventarioController, 'index'])
     router.post('/', [InventarioController, 'store'])
     router.get('/:id', [InventarioController, 'show'])
     router.put('/:id', [InventarioController, 'updateInhabilitado'])
-
+    router.get('/personalizado', [InventarioController, 'getCustomInventory'])
   })
   .prefix('inventario')
 
@@ -103,6 +103,7 @@ router
     router.post('/', [PedidosController, 'store'])
     router.get('/:id', [PedidosController, 'show'])
     router.put('/:id', [PedidosController, 'updateAnulado'])
+    router.get('/vendedor/:idVendedor', [PedidosController, 'pedidosPorVendedor'])
   })
   .prefix('pedidos')
 
@@ -111,6 +112,7 @@ router
     router.get('/', [DetallePedidoController, 'index'])
     router.post('/', [DetallePedidoController, 'store'])
     router.get('/:id', [DetallePedidoController, 'show'])
+    router.get('/pedidos/:idPedido', [DetallePedidoController, 'detallePedidosPorPedidos'])
   })
   .prefix('detalle_pedidos')
 
@@ -135,7 +137,7 @@ router
   .group(() => {
     router.get('/', [EmpresasController, 'index'])
     router.post('/', [EmpresasController, 'store'])
-    router.get('/:id', [EmpresasController, 'show'])
+    router.get('/1', [EmpresasController, 'show'])
   })
   .prefix('empresa')
   
@@ -169,7 +171,6 @@ router
     router.post('/', [PermisosController, 'store'])
     router.get('/:id', [PermisosController, 'show'])
     router.post('/permisosModulo', [PermisosController, 'getPermisosByModulo'])
-
   })
   .prefix('permisos')
   
@@ -274,6 +275,14 @@ router
     router.get('/:id', [LocalidadsController, 'show'])
   })
   .prefix('localidad')
+
+  router
+  .group(() => {
+    // router.get('/', [LocalidadsController, 'index'])
+    // router.post('/', [LocalidadsController, 'store'])
+    // router.get('/:id', [LocalidadsController, 'show'])
+  })
+  
 
   
 

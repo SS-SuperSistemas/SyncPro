@@ -65,4 +65,20 @@ export default class PedidosController {
         pedido.Anulado = true
         return await pedido.save()
     }
+
+    async pedidosPorVendedor({ params, response }: HttpContext) {
+        try {
+            const { idVendedor } = params;
+
+            const pedidos = await Pedidos.query().where('idVendedor', idVendedor);
+            
+            const transformedRegistros = pedidos.map(pedido => this.mapKeys(pedido.toJSON()));
+            return response.ok(transformedRegistros)
+        } catch (error) {
+            return response.internalServerError({ message: 'Error fetching orders', error })
+        }
+    }
+
+
+
 }

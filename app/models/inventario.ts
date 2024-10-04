@@ -1,9 +1,13 @@
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
+import ExistenciaBodega from './existencia_bodega.js'
+import * as relations from '@adonisjs/lucid/types/relations'
+import Marca from './marca.js'
+import SubCategoria from './sub_categoria.js'
 
 export default class Inventario extends BaseModel {
 
-  static table = 'Inventario' 
+  static table = 'Inventario'
 
 
   @column({ isPrimary: true, columnName: 'Codigo' })
@@ -38,9 +42,9 @@ export default class Inventario extends BaseModel {
 
   @column({ columnName: 'Minima' })
   declare Minima: Number
-  
-  @column({ columnName: 'Media' }) 
-  declare Media: Number  
+
+  @column({ columnName: 'Media' })
+  declare Media: Number
 
   @column({ columnName: 'Maxima' })
   declare Maxima: Number
@@ -49,7 +53,7 @@ export default class Inventario extends BaseModel {
   declare Existencia: Number
 
   @column({ columnName: 'Observaciones' })
-  declare Observaciones: String 
+  declare Observaciones: String
 
   @column({ columnName: 'CodMonedaCosto' })
   declare CodMonedaCosto: Number
@@ -108,104 +112,109 @@ export default class Inventario extends BaseModel {
   @column({ columnName: 'Servicio' })
   declare Servicio: Number
 
-  @column({columnName: 'CodProveedor'})
+  @column({ columnName: 'CodProveedor' })
   declare CodProveedor: Boolean
 
-  @column({columnName: 'Serie'})
+  @column({ columnName: 'Serie' })
   declare Serie: Boolean
 
-  @column({columnName: 'PermiteComision'})
+  @column({ columnName: 'PermiteComision' })
   declare PermiteComision: Boolean
 
-  @column({columnName: 'PorcComision'})
+  @column({ columnName: 'PorcComision' })
   declare PorcComision: Number
 
-  @column({columnName: 'ProductoCompuesto'})
+  @column({ columnName: 'ProductoCompuesto' })
   declare ProductoCompuesto: Boolean
 
-  @column({columnName: 'Consignado'})
+  @column({ columnName: 'Consignado' })
   declare Consignado: Number
 
-  @column({columnName: 'Lote'})
+  @column({ columnName: 'Lote' })
   declare Lote: Boolean
 
-  @column({columnName: 'CasaComercial'})
+  @column({ columnName: 'CasaComercial' })
   declare CasaComercial: Number
 
-  @column({columnName: 'CodigoFabricante'})
+  @column({ columnName: 'CodigoFabricante' })
   declare CodigoFabricante: String
 
-  @column({columnName: 'NombreGenerico'})
+  @column({ columnName: 'NombreGenerico' })
   declare NombreGenerico: String
 
-  @column({columnName: 'Imagen'})
+  @column({ columnName: 'Imagen' })
   declare Imagen: String
 
-  @column({columnName: 'CantMayoreo'})
+  @column({ columnName: 'CantMayoreo' })
   declare CantMayoreo: Number
 
-  @column({columnName: 'PrecioMayoreo'})
+  @column({ columnName: 'PrecioMayoreo' })
   declare PrecioMayoreo: Number
 
-  @column({columnName: 'CantidadMayoreo'})
+  @column({ columnName: 'CantidadMayoreo' })
   declare CantidadMayoreo: Number
 
-  @column({columnName: 'PrecioAMayoreo'})
+  @column({ columnName: 'PrecioAMayoreo' })
   declare PrecioAMayoreo: Number
 
-  @column({columnName: 'PrecioBMayoreo'})
+  @column({ columnName: 'PrecioBMayoreo' })
   declare PrecioBMayoreo: Number
 
-  @column({columnName: 'PrecioCMayoreo'})
+  @column({ columnName: 'PrecioCMayoreo' })
   declare PrecioCMayoreo: Number
 
-  @column({columnName: 'PrecioDMayoreo'})
+  @column({ columnName: 'PrecioDMayoreo' })
   declare PrecioDMayoreo: Number
 
-  @column({columnName: 'Facturable'})
+  @column({ columnName: 'Facturable' })
   declare Facturable: Boolean
 
-  @column({columnName: 'PaqPorFardo'})
+  @column({ columnName: 'PaqPorFardo' })
   declare PaqPorFardo: Number
 
-  @column({columnName: 'PrecioPorFardo'})
+  @column({ columnName: 'PrecioPorFardo' })
   declare PrecioPorFardo: Number
 
-  @column({columnName: 'Editable'})
+  @column({ columnName: 'Editable' })
   declare Editable: Boolean
 
-  @column({columnName: 'Equivalencia1'})
+  @column({ columnName: 'Equivalencia1' })
   declare Equivalencia1: String
 
-  @column({columnName: 'Equivalencia2'})
+  @column({ columnName: 'Equivalencia2' })
   declare Equivalencia2: String
 
-  @column({columnName: 'TipoComision'})
+  @column({ columnName: 'TipoComision' })
   declare TipoComision: Boolean
 
-  @column({columnName: 'SubUbicacion2'})
+  @column({ columnName: 'SubUbicacion2' })
   declare SubUbicacion2: Number
 
-  @column({columnName: 'PorcDescuento'})
+  @column({ columnName: 'PorcDescuento' })
   declare PorcDescuento: Number
 
-  @column({columnName: 'PrecioRef'})
+  @column({ columnName: 'PrecioRef' })
   declare PrecioRef: Number
 
-  @column({columnName: 'PreguntaCantidad'})
+  @column({ columnName: 'PreguntaCantidad' })
   declare PreguntaCantidad: Boolean
 
-  @column({columnName: 'NoPermiteAjuste'})
+  @column({ columnName: 'NoPermiteAjuste' })
   declare NoPermiteAjuste: Boolean
 
-  @column({columnName: 'PermiteVentaNegativa'})
+  @column({ columnName: 'PermiteVentaNegativa' })
   declare PermiteVentaNegativa: Boolean
 
 
 
+  @hasMany(() => ExistenciaBodega)
+  declare existencias: relations.HasMany<typeof ExistenciaBodega>;
 
+  @belongsTo(() => Marca)
+  declare marca: relations.BelongsTo<typeof Marca>;
 
-
+  @belongsTo(() => SubCategoria)
+  declare subCategoria: relations.BelongsTo<typeof SubCategoria>;
 
 
 

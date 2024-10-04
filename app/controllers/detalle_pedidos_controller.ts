@@ -57,5 +57,16 @@ export default class DetallePedidosController {
         }
     }
 
+    async detallePedidosPorPedidos({ params, response }: HttpContext) {
+        try {
+            const { idPedido } = params
+            const pedidos = await DetallePedidos.query().where('IdPedido', idPedido);
+            const transformedRegistros = pedidos.map(detallepedido => this.mapKeys(detallepedido.toJSON()));
+            return response.ok(transformedRegistros)
+        } catch (error) {
+            return response.internalServerError({ message: 'Error fetching order details', error })
+        }
+    }
+
 
 }
