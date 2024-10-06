@@ -24,6 +24,17 @@ import DetalleVentasController from '#controllers/detalle_ventas_controller'
 import PermisosController from '#controllers/permisos_controller'
 import ModulosController from '#controllers/modulos_controller'
 import router from '@adonisjs/core/services/router'
+import MovCajasController from '#controllers/movcajas_controller'
+import ConfigsController from '#controllers/configs_controller'
+import ArqueoCajasController from '#controllers/arqueo_cajas_controller'
+import ArqueoChequesController from '#controllers/arqueo_cheques_controller'
+import ArqueoEfectivosController from '#controllers/arqueo_efectivos_controller'
+import ArqueoTarjetasController from '#controllers/arqueo_tarjetas_controller'
+import CierreCajasController from '#controllers/cierre_cajas_controller'
+import AbonoApartadosController from '#controllers/abono_apartados_controller'
+import AbonoPagarsController from '#controllers/abono_pagars_controller'
+import AbonosCobrarsController from '#controllers/abonos_cobrars_controller'
+import LocalidadsController from '#controllers/localidads_controller'
 
 
 router.get('/', async () => {
@@ -49,7 +60,6 @@ router
 
 router
   .group(() => {
-
     router.get('/', [UserController, 'index'])
     router.post('/', [UserController, 'store'])
     router.get('/:id', [UserController, 'show'])
@@ -63,6 +73,8 @@ router
     router.post('/', [ClientesController, 'store'])
     router.get('/:id', [ClientesController, 'show'])
     router.put('/:id', [ClientesController, 'updateInhabilitado'])
+    router.get('/vendedor/:idAgente', [ClientesController, 'clientesPorVendedor'])
+    router.get('/localidad/:idLocalidad', [ClientesController, 'clientesPorLocalidad'])
   })
   .prefix('cliente')
 
@@ -77,12 +89,11 @@ router
 
 router
   .group(() => {
-
     router.get('/', [InventarioController, 'index'])
     router.post('/', [InventarioController, 'store'])
     router.get('/:id', [InventarioController, 'show'])
     router.put('/:id', [InventarioController, 'updateInhabilitado'])
-
+    router.get('/personalizado', [InventarioController, 'getCustomInventory'])
   })
   .prefix('inventario')
 
@@ -92,6 +103,7 @@ router
     router.post('/', [PedidosController, 'store'])
     router.get('/:id', [PedidosController, 'show'])
     router.put('/:id', [PedidosController, 'updateAnulado'])
+    router.get('/vendedor/:idVendedor', [PedidosController, 'pedidosPorVendedor'])
   })
   .prefix('pedidos')
 
@@ -100,6 +112,7 @@ router
     router.get('/', [DetallePedidoController, 'index'])
     router.post('/', [DetallePedidoController, 'store'])
     router.get('/:id', [DetallePedidoController, 'show'])
+    router.get('/pedidos/:idPedido', [DetallePedidoController, 'detallePedidosPorPedidos'])
   })
   .prefix('detalle_pedidos')
 
@@ -124,11 +137,10 @@ router
   .group(() => {
     router.get('/', [EmpresasController, 'index'])
     router.post('/', [EmpresasController, 'store'])
-    router.get('/:id', [EmpresasController, 'show'])
+    router.get('/1', [EmpresasController, 'show'])
   })
   .prefix('empresa')
   
-
 router
   .group(() => {
     router.get('/', [VentasController, 'index'])
@@ -153,14 +165,12 @@ router
   })
   .prefix('detalle_venta')
 
-
   router
   .group(() => {
     router.get('/', [PermisosController, 'index'])
     router.post('/', [PermisosController, 'store'])
     router.get('/:id', [PermisosController, 'show'])
     router.post('/permisosModulo', [PermisosController, 'getPermisosByModulo'])
-
   })
   .prefix('permisos')
   
@@ -171,6 +181,119 @@ router
     router.get('/:id', [ModulosController, 'show'])
   })
   .prefix('modulo')
+
+  router
+  .group(() => {
+    router.get('/', [MovCajasController, 'index'])
+    router.post('/', [MovCajasController, 'store'])
+    router.get('/:id', [MovCajasController, 'show'])
+    router.put('/:id', [MovCajasController, 'updateAnulado'])
+  })
+  .prefix('movcajas')
+
+  router
+  .group(() => {
+    router.get('/', [ConfigsController, 'index'])
+    router.get('/:id', [ConfigsController, 'show'])
+    router.put('/:id', [ConfigsController, 'update'])
+  })
+  .prefix('config')
+  
+  router
+  .group(() => {
+    router.get('/', [ArqueoCajasController, 'index'])
+    router.post('/', [ArqueoCajasController, 'store'])
+    router.get('/:id', [ArqueoCajasController, 'show'])
+    router.put('/:id', [ArqueoCajasController, 'updateAnulado'])
+  })
+  .prefix('arqueo_caja')  
+
+  router
+  .group(() => {
+    router.get('/', [ArqueoChequesController, 'index'])
+    router.post('/', [ArqueoChequesController, 'store'])
+    router.get('/:id', [ArqueoChequesController, 'show'])
+    })
+  .prefix('arqueo_cheque')
+
+  router
+  .group(() => {
+    router.get('/', [ArqueoEfectivosController, 'index'])
+    router.post('/', [ArqueoEfectivosController, 'store'])
+    router.get('/:id', [ArqueoEfectivosController, 'show'])
+  })
+  .prefix('arqueo_efectivo')
+
+  router
+  .group(() => {
+    router.get('/', [ArqueoTarjetasController, 'index'])
+    router.post('/', [ArqueoTarjetasController, 'store'])
+    router.get('/:id', [ArqueoTarjetasController, 'show'])
+  })
+  .prefix('arqueo_tarjeta')
+
+  router
+  .group(() => {
+    router.get('/', [CierreCajasController, 'index'])
+    router.post('/', [CierreCajasController, 'store'])
+    router.get('/:id', [CierreCajasController, 'show'])
+    router.put('/:id', [CierreCajasController, 'updateAnulado'])
+  })
+  .prefix('cierre_caja')
+
+  router
+  .group(() => {
+    router.get('/', [AbonoApartadosController, 'index'])
+    router.post('/', [AbonoApartadosController, 'store'])
+    router.get('/:id', [AbonoApartadosController, 'show'])
+    router.put('/:id', [AbonoApartadosController, 'updateAnulado'])
+  })
+  .prefix('abono_apartado')
+
+  router
+  .group(() => {
+    router.get('/', [AbonoPagarsController, 'index'])
+    router.post('/', [AbonoPagarsController, 'store'])
+    router.get('/:id', [AbonoPagarsController, 'show'])
+    router.put('/:id', [AbonoPagarsController, 'updateAnulado'])
+  })
+  .prefix('abono_pagar')
+
+  router
+  .group(() => {
+    router.get('/', [AbonosCobrarsController, 'index'])
+    router.post('/', [AbonosCobrarsController, 'store'])
+    router.get('/:id', [AbonosCobrarsController, 'show'])
+    router.put('/:id', [AbonosCobrarsController, 'updateAnulado'])
+  })
+  .prefix('abono_cobrar')
+
+  router
+  .group(() => {
+    router.get('/', [LocalidadsController, 'index'])
+    router.post('/', [LocalidadsController, 'store'])
+    router.get('/:id', [LocalidadsController, 'show'])
+  })
+  .prefix('localidad')
+
+  router
+  .group(() => {
+    // router.get('/', [LocalidadsController, 'index'])
+    // router.post('/', [LocalidadsController, 'store'])
+    // router.get('/:id', [LocalidadsController, 'show'])
+  })
+  
+
+  
+
+
+
+
+
+
+
+
+
 
   
 

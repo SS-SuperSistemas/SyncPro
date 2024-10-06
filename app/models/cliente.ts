@@ -80,5 +80,17 @@ static table = 'Clientes'
   declare Exonerar: Boolean
 
   @column({columnName: 'Codigo' })
-  declare Codigo: Number
+  declare Codigo: string
+
+  @column({columnName: 'Contacto' })
+  declare Contacto: string
+
+  @column({columnName: 'TelContacto' })
+  declare TelContacto: string
+
+  @column({columnName: 'DPI' })
+  declare DPI: number
+
+  @column({columnName: 'Categoria' })
+  declare Categoria: number
 }

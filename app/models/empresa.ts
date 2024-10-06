@@ -4,22 +4,28 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 export default class Empresa extends BaseModel {
 static table = 'Empresa'
 
-  @column({ isPrimary: true, columnName: 'Empresa' })
+  @column({ isPrimary: true, columnName: 'Id' })
+  declare Id: number
+
+  @column({ columnName: 'Cedula' })
+  declare Cedula: String
+
+  @column({ columnName: 'Empresa' })
   declare Empresa: String
 
   @column({ columnName: 'NombreComercial' })
   declare NombreComercial: String
 
-  @column({ columnName: 'Telefono1' })
+  @column({ columnName: 'Telefono01' })
   declare Telefono1: String
   
-  @column({ columnName: 'Telefono2' })  
+  @column({ columnName: 'Telefono02' })  
   declare Telefono2: String
 
-  @column({ columnName: 'Fax' })
+  @column({ columnName: 'Fax01' })
   declare Fax: String
 
-  @column({ columnName: 'Fax2' })
+  @column({ columnName: 'Fax02' })
   declare Fax2: String
 
   @column({ columnName: 'Direccion' })
@@ -28,6 +34,9 @@ static table = 'Empresa'
   @column({ columnName: 'Frase' })
   declare Frase: String
 
+  @column({ columnName: 'Logo' })
+  declare Logo: Buffer
+
   @column({ columnName: 'Email' })
   declare Email: String
 
@@ -35,7 +44,7 @@ static table = 'Empresa'
   declare Web: String
  
   @column({ columnName: 'Facebook' })
-  declare Logo: String
+  declare Facebook: String
 
   @column({ columnName: 'Info' })
   declare Info: String
@@ -69,6 +78,9 @@ static table = 'Empresa'
 
   @column({ columnName: 'AgenteRetenedor' })
   declare AgenteRetenedor: Boolean
+
+  @column({ columnName: 'Imagen' })
+  declare Imagen: Buffer
 
 
 }

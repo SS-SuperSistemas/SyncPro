@@ -26,3 +26,5 @@ export default class AperturaCaja extends BaseModel {
   declare Hora: DateTime
 
 }
+
+
