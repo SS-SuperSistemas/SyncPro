@@ -16,20 +16,20 @@ export default class MovCajasController {
 
     async store({ request, response }: HttpContext) {
         const data = request.only([
-            'Entrada', 'Monto', 'CodMoneda', 'IdUsuario', 
-            'Observaciones', 'Anulado', 'NumApertura', 'TipoCambio', 
+            'Entrada', 'Monto', 'CodMoneda', 'IdUsuario',
+            'Observaciones', 'Anulado', 'NumApertura', 'TipoCambio',
             'Fecha', 'Hora', 'IdBanco' // Cambié Idbanco a IdBanco
         ]);
-    
+
         try {
             console.log('Datos a insertar:', data); // Agregar console.log para verificar datos
-    
+
             await db.rawQuery(
                 `INSERT INTO MovCajas (Entrada, Monto, CodMoneda, IdUsuario, Observaciones, Anulado, 
                 NumApertura, TipoCambio, Fecha, Hora, IdBanco) 
                  VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
-                
+
                     data.Entrada,
                     data.Monto,
                     data.CodMoneda,
@@ -43,7 +43,7 @@ export default class MovCajasController {
                     data.IdBanco // Cambié Idbanco a IdBanco
                 ]
             );
-    
+
             return response.created({ message: 'Movimiento creado exitosamente' });
         } catch (error) {
             console.log('Error al insertar:', error); // Proporcionar un mensaje de error más claro

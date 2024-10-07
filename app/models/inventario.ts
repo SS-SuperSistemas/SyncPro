@@ -1,226 +1,199 @@
-import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
-import ExistenciaBodega from './existencia_bodega.js'
-import * as relations from '@adonisjs/lucid/types/relations'
-import Marca from './marca.js'
-import SubCategoria from './sub_categoria.js'
 
 export default class Inventario extends BaseModel {
 
   static table = 'Inventario'
 
-
   @column({ isPrimary: true, columnName: 'Codigo' })
   declare Codigo: number
 
   @column({ columnName: 'Barras' })
-  declare Barras: number
-
-  @column({ columnName: 'IdBodega' })
-  declare IdBodega: number
+  declare Barras: string // Ajustado a string para varchar
 
   @column({ columnName: 'Descripcion' })
-  declare Descripcion: String
+  declare Descripcion: string // Ajustado a string para varchar
 
   @column({ columnName: 'DescripcionCorta' })
-  declare DescripcionCorta: String
+  declare DescripcionCorta: string // Ajustado a string para varchar
 
   @column({ columnName: 'Presentacion' })
-  declare Presentacion: number
+  declare Presentacion: number // int
 
   @column({ columnName: 'CodPresent' })
-  declare CodPresent: number
+  declare CodPresent: number // int
 
   @column({ columnName: 'CodMarca' })
-  declare CodMarca: Number
+  declare CodMarca: number // int
 
   @column({ columnName: 'CodSubCategoria' })
-  declare CodSubCategoria: Number
+  declare CodSubCategoria: number // int
 
   @column({ columnName: 'SubUbicacion' })
-  declare SubUbicacion: Number
+  declare SubUbicacion: number // int
 
   @column({ columnName: 'Minima' })
-  declare Minima: Number
+  declare Minima: number // float
 
   @column({ columnName: 'Media' })
-  declare Media: Number
+  declare Media: number // float
 
   @column({ columnName: 'Maxima' })
-  declare Maxima: Number
+  declare Maxima: number // float
 
   @column({ columnName: 'Existencia' })
-  declare Existencia: Number
+  declare Existencia: number // float
 
   @column({ columnName: 'Observaciones' })
-  declare Observaciones: String
+  declare Observaciones: string // Ajustado a string para varchar
 
   @column({ columnName: 'CodMonedaCosto' })
-  declare CodMonedaCosto: Number
+  declare CodMonedaCosto: number // int
 
   @column({ columnName: 'CostoGeneral' })
-  declare CostoGeneral: Number
+  declare CostoGeneral: number // decimal
 
   @column({ columnName: 'CodMonedaVenta' })
-  declare CodMonedaVenta: Number
+  declare CodMonedaVenta: number // int
 
   @column({ columnName: 'IVenta' })
-  declare IVenta: Boolean
+  declare IVenta: boolean // bit
 
   @column({ columnName: 'UtilidadA' })
-  declare UtilidadA: Number
+  declare UtilidadA: number // decimal
 
   @column({ columnName: 'UtilidadB' })
-  declare UtilidadB: Number
+  declare UtilidadB: number // decimal
 
   @column({ columnName: 'UtilidadC' })
-  declare UtilidadC: Number
+  declare UtilidadC: number // decimal
 
   @column({ columnName: 'UtilidadD' })
-  declare UtilidadD: Number
+  declare UtilidadD: number // decimal
 
   @column({ columnName: 'PrecioA' })
-  declare PrecioA: Number
+  declare PrecioA: number // decimal
 
   @column({ columnName: 'PrecioB' })
-  declare PrecioB: Number
+  declare PrecioB: number // decimal
 
   @column({ columnName: 'PrecioC' })
-  declare PrecioC: Number
+  declare PrecioC: number // decimal
 
   @column({ columnName: 'PrecioD' })
-  declare PrecioD: Number
+  declare PrecioD: number // decimal
 
   @column({ columnName: 'PermiteDescuento' })
-  declare PermiteDescuento: Boolean
+  declare PermiteDescuento: boolean // bit
 
   @column({ columnName: 'MaxDesc' })
-  declare MaxDesc: Number
+  declare MaxDesc: number // float
 
   @column({ columnName: 'FechaIngreso' })
-  declare FechaIngreso: DateTime
+  declare FechaIngreso: DateTime // datetime
 
   @column({ columnName: 'PreguntaPrecio' })
-  declare PreguntaPrecio: Boolean
+  declare PreguntaPrecio: boolean // bit
 
   @column({ columnName: 'Apartado' })
-  declare Apartado: Number
+  declare Apartado: number // float
 
   @column({ columnName: 'Inhabilitado' })
-  declare Inhabilitado: Boolean
+  declare Inhabilitado: boolean // bit
 
   @column({ columnName: 'Servicio' })
-  declare Servicio: Number
+  declare Servicio: number // int
 
   @column({ columnName: 'CodProveedor' })
-  declare CodProveedor: Boolean
+  declare CodProveedor: boolean // bit
 
   @column({ columnName: 'Serie' })
-  declare Serie: Boolean
+  declare Serie: boolean // bit
 
   @column({ columnName: 'PermiteComision' })
-  declare PermiteComision: Boolean
+  declare PermiteComision: boolean // bit
 
   @column({ columnName: 'PorcComision' })
-  declare PorcComision: Number
+  declare PorcComision: number // float
 
   @column({ columnName: 'ProductoCompuesto' })
-  declare ProductoCompuesto: Boolean
+  declare ProductoCompuesto: boolean // bit
 
   @column({ columnName: 'Consignado' })
-  declare Consignado: Number
+  declare Consignado: number // float
 
   @column({ columnName: 'Lote' })
-  declare Lote: Boolean
+  declare Lote: boolean // bit
 
   @column({ columnName: 'CasaComercial' })
-  declare CasaComercial: Number
+  declare CasaComercial: number // float
 
   @column({ columnName: 'CodigoFabricante' })
-  declare CodigoFabricante: String
+  declare CodigoFabricante: string // Ajustado a string para varchar
 
   @column({ columnName: 'NombreGenerico' })
-  declare NombreGenerico: String
+  declare NombreGenerico: string // Ajustado a string para varchar
 
   @column({ columnName: 'Imagen' })
-  declare Imagen: String
+  declare Imagen: string // Ajustado a string para varchar
 
   @column({ columnName: 'CantMayoreo' })
-  declare CantMayoreo: Number
+  declare CantMayoreo: number // float
 
   @column({ columnName: 'PrecioMayoreo' })
-  declare PrecioMayoreo: Number
+  declare PrecioMayoreo: number // float
 
   @column({ columnName: 'CantidadMayoreo' })
-  declare CantidadMayoreo: Number
+  declare CantidadMayoreo: number // float
 
   @column({ columnName: 'PrecioAMayoreo' })
-  declare PrecioAMayoreo: Number
+  declare PrecioAMayoreo: number // float
 
   @column({ columnName: 'PrecioBMayoreo' })
-  declare PrecioBMayoreo: Number
+  declare PrecioBMayoreo: number // float
 
   @column({ columnName: 'PrecioCMayoreo' })
-  declare PrecioCMayoreo: Number
+  declare PrecioCMayoreo: number // float
 
   @column({ columnName: 'PrecioDMayoreo' })
-  declare PrecioDMayoreo: Number
+  declare PrecioDMayoreo: number // float
 
   @column({ columnName: 'Facturable' })
-  declare Facturable: Boolean
+  declare Facturable: boolean // bit
 
   @column({ columnName: 'PaqPorFardo' })
-  declare PaqPorFardo: Number
+  declare PaqPorFardo: number // float
 
   @column({ columnName: 'PrecioPorFardo' })
-  declare PrecioPorFardo: Number
+  declare PrecioPorFardo: number // float
 
   @column({ columnName: 'Editable' })
-  declare Editable: Boolean
+  declare Editable: boolean // bit
 
   @column({ columnName: 'Equivalencia1' })
-  declare Equivalencia1: String
+  declare Equivalencia1: string // Ajustado a string para varchar
 
   @column({ columnName: 'Equivalencia2' })
-  declare Equivalencia2: String
+  declare Equivalencia2: string // Ajustado a string para varchar
 
   @column({ columnName: 'TipoComision' })
-  declare TipoComision: Boolean
+  declare TipoComision: boolean // bit
 
   @column({ columnName: 'SubUbicacion2' })
-  declare SubUbicacion2: Number
+  declare SubUbicacion2: number // int
 
   @column({ columnName: 'PorcDescuento' })
-  declare PorcDescuento: Number
+  declare PorcDescuento: number // float
 
   @column({ columnName: 'PrecioRef' })
-  declare PrecioRef: Number
+  declare PrecioRef: number // float
 
   @column({ columnName: 'PreguntaCantidad' })
-  declare PreguntaCantidad: Boolean
+  declare PreguntaCantidad: boolean // bit
 
   @column({ columnName: 'NoPermiteAjuste' })
-  declare NoPermiteAjuste: Boolean
+  declare NoPermiteAjuste: boolean // bit
 
   @column({ columnName: 'PermiteVentaNegativa' })
-  declare PermiteVentaNegativa: Boolean
-
-
-
-  @hasMany(() => ExistenciaBodega)
-  declare existencias: relations.HasMany<typeof ExistenciaBodega>;
-
-  @belongsTo(() => Marca)
-  declare marca: relations.BelongsTo<typeof Marca>;
-
-  @belongsTo(() => SubCategoria)
-  declare subCategoria: relations.BelongsTo<typeof SubCategoria>;
-
-
-
-
-
-
-
-
+  declare PermiteVentaNegativa: boolean // bit
 }

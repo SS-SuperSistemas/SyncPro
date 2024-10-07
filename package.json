@@ -53,10 +53,11 @@
   },
   "dependencies": {
     "@adonisjs/auth": "^9.2.3",
-    "@adonisjs/core": "^6.12.1",
+    "@adonisjs/core": "^6.14.0",
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.2.0",
     "@vinejs/vine": "^2.1.0",
+    "bcrypt": "^5.1.1",
     "luxon": "^3.5.0",
     "reflect-metadata": "^0.2.2",
     "tedious": "^18.6.1"

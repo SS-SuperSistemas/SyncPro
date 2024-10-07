@@ -1,5 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Inventario from '#models/inventario'
+import db from '@adonisjs/lucid/services/db';
+
 
 
 
@@ -100,23 +102,19 @@ export default class InventariosController {
     }
 
     async store({ request, response }: HttpContext) {
-        const data = request.only(['Codigo', 'Barras', 'IdBodega', 'Descripcion', 'DescripcionCorta', 'Presentacion', 'CodPresent', 'CodMarca', 'CodSubCategoria',
+        const data = request.only(['Codigo', 'Barras', 'Descripcion', 'DescripcionCorta', 'Presentacion', 'CodPresent', 'CodMarca', 'CodSubCategoria',
             'SubUbicacion', 'Minima', 'Media', 'Maxima', 'Existencia', 'Observaciones', 'CodMonedaCosto', 'CostoGeneral', 'CodMonedaVenta', 'IVenta', 'UtilidadA',
-            'UtilidadB', 'PrecioC', 'PrecioD', 'PermiteDescuento', 'MaxDesc', 'FechaIngreso', 'PreguntaPrecio', 'Apartado', 'Inhabilitado', 'Servicio', 'CodProveedor',
-            'Serie', 'PermiteComision', 'PorcComision', 'ProductoCompuesto', 'Consignado', 'Lote', 'CasaComercial', 'CodigoFabricante', 'NombreGenerico', 'Imagen', 'CantMayoreo',
+            'UtilidadB', 'UtilidadC', 'UtilidadD', 'PrecioA', 'PrecioB','PrecioC', 'PrecioD', 'PermiteDescuento', 'MaxDesc', 'FechaIngreso', 'PreguntaPrecio', 'Apartado', 'Inhabilitado', 'Servicio', 'CodProveedor',
+            'Serie', 'PermiteComision', 'PorcComision', 'ProductoCompuesto', 'Consignado', 'Lote', 'CasaComercial', 'CodigoFabricante', 'NombreGenerico', 'Imagen', 'ImagenByte', 'CantMayoreo',
             'PrecioMayoreo', 'CantidadMayoreo', 'PrecioAMayoreo', 'PrecioBMayoreo', 'PrecioCMayoreo', 'PrecioDMayoreo', 'Facturable', 'PaqPorFardo', 'PrecioPorFardo', 'Editable',
             'Equivalencia1', 'Equivalencia2', 'TipoComision', 'SubUbicacion2', 'PorcDescuento', 'PrecioRef', 'PreguntaCantidad', 'NoPermiteAjuste', 'PermiteVentaNegativa'
         ])
-
         try {
             const inventario = await Inventario.create(data)
             return response.created(inventario)
         } catch (error) {
             return response.internalServerError({ message: 'Error creating inventory', error })
         }
-
-
-
     }
 
     async show({ params, response }: HttpContext) {
@@ -125,10 +123,10 @@ export default class InventariosController {
             const transformedRegistros = this.mapKeys(inventario.toJSON());
             return response.ok(transformedRegistros)
         } catch (error) {
+            console.log(error)
             return response.internalServerError({ message: 'Error fetching inventory', error })
         }
     }
-
 
     async updateInhabilitado({ params, response }: HttpContext) {
         const inventario = await Inventario.findOrFail(params.id)
@@ -137,32 +135,41 @@ export default class InventariosController {
         return response.ok(inventario)
     }
 
-    async getCustomInventory({ response }: HttpContext) {
+    async obtenerInventario({ response }: HttpContext) {
         try {
-            const registros = await Inventario.query()
-                .preload('existencias') // Cargar existencias
-                .preload('marca') // Cargar marca
-                .preload('subCategoria') // Cargar subcategoría
-                .where('inhabilitado', false)
-                .select('codigo', 'barras', 'descripcion', 'inhabilitado');
+            const resultado = await db.rawQuery(
+                `SELECT 
+                    INVENTARIO.Codigo,
+                    INVENTARIO.Barras,
+                    INVENTARIO.Descripcion,
+                    EXISTENCIABODEGAS.ExistenciaTotal AS Existencia,
+                    INVENTARIO.COSTOGENERAL AS Costo,
+                    INVENTARIO.PRECIOA AS PrecioFinal,
+                    INVENTARIO.PRECIOB,
+                    INVENTARIO.PRECIOC,
+                    INVENTARIO.PRECIOD,
+                    MARCAS.NOMBREMARCA AS Marcas,
+                    CONCAT(Categorias.categoria, ' / ', SubCategorias.SubCategoria) AS Categoria_SubCategoria,
+                    INVENTARIO.Observaciones
+                FROM 
+                    INVENTARIO
+                INNER JOIN 
+                    EXISTENCIABODEGAS ON INVENTARIO.CODIGO = EXISTENCIABODEGAS.CODARTICULO
+                INNER JOIN 
+                    MARCAS ON INVENTARIO.CODMARCA = MARCAS.ID
+                INNER JOIN 
+                    SubCategorias ON SubCategorias.Id = INVENTARIO.CodSubCategoria
+                INNER JOIN 
+                    Categorias ON Categorias.Codigo = SubCategorias.CodCategoria
+                WHERE 
+                    INHABILITADO = 0`
+            );
 
-            const transformedRegistros = registros.map(inventario => ({
-                Codigo: inventario.Codigo,
-                Barras: inventario.Barras,
-                Descripcion: inventario.Descripcion,
-                Existencia: inventario.existencias.reduce((total, existencia) => total + existencia.ExistenciaTotal, 0), // Suponiendo que tienes un campo `existenciaTotal` en ExistenciaBodega
-                Costo: inventario.CostoGeneral, // Asegúrate de que este campo esté disponible
-                PrecioFinal: inventario.PrecioA, // Asegúrate de que este campo esté disponible
-                Marcas: inventario.marca?.NombreMarca, // Asegúrate de que este campo esté disponible
-                Categoria_SubCategoria: `${inventario.subCategoria?.categoria} / ${inventario.subCategoria?.SubCategoria}`, // Asegúrate de que estos campos estén disponibles
-                Observaciones: inventario.Observaciones // Asegúrate de que este campo esté disponible
-            }));
+            return response.ok(resultado); // Devuelve el resultado de la consulta
 
-            return response.ok(transformedRegistros);
         } catch (error) {
-            console.error('Error fetching custom inventory:', error);
-            return response.internalServerError({ message: 'Error fetching custom inventory', error });
+            console.error('Error al obtener el inventario:', error); // Asegúrate de que este mensaje se imprima
+            return response.internalServerError({ message: 'Error al obtener el inventario', error });
         }
     }
-
 }

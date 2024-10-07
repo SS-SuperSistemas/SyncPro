@@ -1,11 +1,10 @@
 
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import SubCategoria from './sub_categoria.js'
-import * as relations from '@adonisjs/lucid/types/relations'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
+
 
 export default class Categoria extends BaseModel {
 
-  static table = 'Categoria'
+  static table = 'Categorias'
 
   @column({ isPrimary: true, columnName: 'Codigo' })
   declare Codigo: number
@@ -16,7 +15,6 @@ export default class Categoria extends BaseModel {
   @column({ columnName: 'idBodega' })
   declare idBodega: number
 
-  @hasMany(() => SubCategoria)
-  declare subCategorias: relations.HasMany<typeof SubCategoria>;
+
 
 }

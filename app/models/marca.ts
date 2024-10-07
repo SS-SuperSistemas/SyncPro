@@ -1,7 +1,6 @@
 
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm'
-import * as relations from '@adonisjs/lucid/types/relations'
-import Inventario from './inventario.js'
+import { BaseModel, column} from '@adonisjs/lucid/orm'
+
 
 export default class Marca extends BaseModel {
 
@@ -16,8 +15,6 @@ export default class Marca extends BaseModel {
   @column({ columnName: 'idBodega' })
   declare idBodega: number
 
-  @hasMany(() => Inventario)
-  declare inventarios: relations.HasMany<typeof Inventario>;
-
+  
 
 }

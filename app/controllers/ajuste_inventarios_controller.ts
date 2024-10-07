@@ -1,11 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import AjusteCobrar from '#models/ajuste_cobrar'
-
-export default class AjusteCobrarsController {
-
+import AjusteInventario from '#models/ajuste_inventario'
+export default class AjusteInventariosController {
     async index({ response }: HttpContext) {
         try {
-            const registros = await AjusteCobrar.all()
+            const registros = await AjusteInventario.all()
             return response.ok(registros)
         } catch (error) {
             return response.internalServerError({ message: 'Error fetching records', error })
@@ -13,10 +11,16 @@ export default class AjusteCobrarsController {
     }
 
     async store({ request, response }: HttpContext) {
-        const data = request.only(['Tipo', 'CodCliente', 'Fecha', 'SaldoAnt', 'Ajuste', 'SaldoAct', 'Anulado', 'IdUsuario', 
-            'CodMoneda', 'Observaciones', 'TipoCambio', 'FechaEntrada', 'Hora'])
+        const data = request.only([
+            'Fecha',
+            'Anula',
+            'Observaciones',
+            'IdUsuario',
+            'CodMoneda',
+            'TipoCambio',
+        ])
         try {
-            const registros = await AjusteCobrar.create(data)
+            const registros = await AjusteInventario.create(data)
             return response.created({ message: 'Record created successfully', registros })
         } catch (error) {
             return response.internalServerError({ message: 'Error creating record', error })
@@ -25,7 +29,7 @@ export default class AjusteCobrarsController {
 
     async show({ params, response }: HttpContext) {
         try {
-            const registros = await AjusteCobrar.find(params.id)
+            const registros = await AjusteInventario.find(params.id)
             return response.ok(registros)
         } catch (error) {
             return response.internalServerError({ message: 'Error fetching record', error })
@@ -33,13 +37,9 @@ export default class AjusteCobrarsController {
     }
 
     async updateAnulado({ params, response }: HttpContext) {
-        const ajuste = await AjusteCobrar.findOrFail(params.id)
-        ajuste.Anulado = true
+        const ajuste = await AjusteInventario.findOrFail(params.id)
+        ajuste.Anula = true
         await ajuste.save()
         return response.ok(ajuste)
     }
-
-    
-
-
 }

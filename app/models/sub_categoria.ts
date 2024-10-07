@@ -1,11 +1,11 @@
 
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import * as relations from '@adonisjs/lucid/types/relations'
-import Categoria from './categoria.js'
+import { BaseModel, column } from '@adonisjs/lucid/orm'
+
 
 export default class SubCategoria extends BaseModel {
 
   static table = 'SubCategorias'
+  
   @column({ isPrimary: true, columnName: 'Id' })
   declare Id: number
 
@@ -19,6 +19,4 @@ export default class SubCategoria extends BaseModel {
   declare idBodega: number
 
 
-  @belongsTo(() => Categoria)
-  declare categoria: relations.BelongsTo<typeof Categoria>;
 }

@@ -1,11 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import AjusteCobrar from '#models/ajuste_cobrar'
-
-export default class AjusteCobrarsController {
+import AjustesPagar from '#models/ajustes_pagar'
+export default class AjustesPagarsController {
 
     async index({ response }: HttpContext) {
         try {
-            const registros = await AjusteCobrar.all()
+            const registros = await AjustesPagar.all()
             return response.ok(registros)
         } catch (error) {
             return response.internalServerError({ message: 'Error fetching records', error })
@@ -13,10 +12,10 @@ export default class AjusteCobrarsController {
     }
 
     async store({ request, response }: HttpContext) {
-        const data = request.only(['Tipo', 'CodCliente', 'Fecha', 'SaldoAnt', 'Ajuste', 'SaldoAct', 'Anulado', 'IdUsuario', 
-            'CodMoneda', 'Observaciones', 'TipoCambio', 'FechaEntrada', 'Hora'])
         try {
-            const registros = await AjusteCobrar.create(data)
+            const data = request.only(['Tipo', 'CodProveedor', 'Fecha', 'SaldoAnt', 'Monto', 'SaldoAct', 'Observaciones', 'Anulado', 'IdUsuario',
+                'CodMoneda', 'FechaEntrada', 'TipoCambio', 'NumRecibo'])
+            const registros = await AjustesPagar.create(data)
             return response.created({ message: 'Record created successfully', registros })
         } catch (error) {
             return response.internalServerError({ message: 'Error creating record', error })
@@ -25,7 +24,7 @@ export default class AjusteCobrarsController {
 
     async show({ params, response }: HttpContext) {
         try {
-            const registros = await AjusteCobrar.find(params.id)
+            const registros = await AjustesPagar.find(params.id)
             return response.ok(registros)
         } catch (error) {
             return response.internalServerError({ message: 'Error fetching record', error })
@@ -33,13 +32,12 @@ export default class AjusteCobrarsController {
     }
 
     async updateAnulado({ params, response }: HttpContext) {
-        const ajuste = await AjusteCobrar.findOrFail(params.id)
+        const ajuste = await AjustesPagar.findOrFail(params.id)
         ajuste.Anulado = true
         await ajuste.save()
         return response.ok(ajuste)
     }
 
-    
 
 
 }
