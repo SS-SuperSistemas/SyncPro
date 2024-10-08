@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Pedidos from '#models/pedidos'
+// import db from '@adonisjs/lucid/services/db';
 export default class PedidosController {
 
     // async index({ response }: HttpContext) {
@@ -40,15 +41,42 @@ export default class PedidosController {
     }
 
     async store({ request, response }: HttpContext) {
-        const data = request.only(['id', 'CodCliente', 'Fecha', 'Observaciones', 'IdUsuario', 'FechaEntrega', 'CodMoneda', 'TipoCambio', 'Anulado', 'idVendedor'])
+        const data = request.only(['CodCliente', 'Fecha', 'Observaciones', 'IdUsuario', 'FechaEntrega', 'CodMoneda', 'TipoCambio', 'Anulado', 'idVendedor'])
         try {
             const pedido = await Pedidos.create(data)
-            return response.created(pedido)
+            console.log({ message: 'Pedido creado exitosamente', savedOrder:{id: pedido.id}})
+            return response.status(200).json({ message: 'Pedido creado exitosamente', savedOrder:{id: pedido.id} })
+
         } catch (error) {
             console.log(error)
             return response.internalServerError({ message: 'Error creating order', error })
         }
     }
+
+    // async storev2({ request, response }: HttpContext) {
+    //     const data = request.only(['CodCliente', 'Fecha', 'Observaciones', 'IdUsuario', 'FechaEntrega', 'CodMoneda', 'TipoCambio', 'Anulado', 'idVendedor'])
+    //     try {
+    //         await db.rawQuery(
+    //             `Insert into [Pedidos](CodCliente, Fecha, Observaciones, IdUsuario, FechaEntrega, CodMoneda, TipoCambio, Anulado, idVendedor) 
+    //             values (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    //             [
+    //                 data.CodCliente,
+    //                 data.Fecha,
+    //                 data.Observaciones ?? "",
+    //                 data.IdUsuario,
+    //                 data.FechaEntrega,
+    //                 data.CodMoneda,
+    //                 data.TipoCambio,
+    //                 data.Anulado,
+    //                 data.idVendedor
+    //             ]
+    //         );
+    //         return response.status(200).json({ message: 'Pedido creado exitosamente', data: data });
+    //     } catch (error) {
+    //         console.log(error)
+    //         return response.internalServerError({ message: 'Error al crear el pedido', error })
+    //     }
+    // }
 
     async show({ params, response }: HttpContext) {
         try {
@@ -71,14 +99,11 @@ export default class PedidosController {
             const { idVendedor } = params;
 
             const pedidos = await Pedidos.query().where('idVendedor', idVendedor);
-            
+
             const transformedRegistros = pedidos.map(pedido => this.mapKeys(pedido.toJSON()));
             return response.ok(transformedRegistros)
         } catch (error) {
             return response.internalServerError({ message: 'Error fetching orders', error })
         }
     }
-
-
-
 }

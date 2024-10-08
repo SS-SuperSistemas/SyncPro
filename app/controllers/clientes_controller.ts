@@ -1,5 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Cliente from '#models/cliente'
+import db from '@adonisjs/lucid/services/db';
+
+
+
 
 export default class ClientesController {
 
@@ -70,9 +74,119 @@ export default class ClientesController {
             const cliente = await Cliente.create(data)
             return response.created(cliente)
         } catch (error) {
+            console.log(error)
             return response.internalServerError({ message: 'Error creating client', error })
         }
     }
+
+    async storev2({ request, response }: HttpContext) {
+        const data = request.only([
+            'Cedula',
+            'Nombre',
+            'Observaciones',
+            'Telefono1',
+            'Telefono2',
+            'Celular',
+            'Email',
+            'Direccion',
+            'Credito',
+            'LimiteCredito',
+            'PlazoCredito',
+            'TipoPrecio',
+            'Restriccion',
+            'CodMoneda',
+            'Moroso',
+            'InHabilitado',
+            'FechaIngreso',
+            'IdLocalidad',
+            'IdAgente',
+            'PermiteDescuento',
+            'Descuento',
+            'MaxDescuento',
+            'Exonerar',
+            'Codigo',
+            'Contacto',
+            'TelContacto',
+            'DPI',
+            'Categoria',
+        ]);
+        try {
+            console.log('Datos a insertar:', data); // Verificar datos
+            await db.rawQuery(
+                `INSERT INTO [Clientes] (
+                    [Cedula], 
+                    [Nombre], 
+                    [Observaciones], 
+                    [Telefono1], 
+                    [Telefono2], 
+                    [Celular], 
+                    [Email], 
+                    [Direccion], 
+                    [Credito], 
+                    [LimiteCredito], 
+                    [PlazoCredito], 
+                    [TipoPrecio], 
+                    [Restriccion], 
+                    [CodMoneda], 
+                    [Moroso], 
+                    [InHabilitado], 
+                    [FechaIngreso], 
+                    [IdLocalidad], 
+                    [IdAgente], 
+                    [PermiteDescuento], 
+                    [Descuento], 
+                    [MaxDescuento], 
+                    [Exonerar], 
+                    [Codigo], 
+                    [Contacto], 
+                    [TelContacto], 
+                    [DPI], 
+                    [Categoria]
+                ) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    data.Cedula,
+                    data.Nombre,
+                    data.Observaciones ?? "",              // Asigna "" si es null
+                    data.Telefono1 ?? "",                  // Asigna "" si es null
+                    data.Telefono2 ?? "",                  // Asigna "" si es null
+                    data.Celular ?? "",                     // Asigna "" si es null
+                    data.Email ?? "",                       // Asigna "" si es null
+                    data.Direccion ?? "",                   // Asigna "" si es null
+                    data.Credito ?? false,                  // Asigna false si es null
+                    data.LimiteCredito ?? 0,                // Asigna 0 si es null
+                    data.PlazoCredito ?? 0,                 // Asigna 0 si es null
+                    data.TipoPrecio ?? 0,                   // Asigna 0 si es null
+                    data.Restriccion ?? false,              // Asigna false si es null
+                    data.CodMoneda ?? 0,                    // Asigna 0 si es null
+                    data.Moroso ?? false,                   // Asigna false si es null
+                    data.InHabilitado ?? false,             // Asigna false si es null
+                    data.FechaIngreso ?? new Date(),        // Asigna la fecha actual si es null
+                    data.IdLocalidad ?? 0,                  // Asigna 0 si es null
+                    data.IdAgente ?? 0,                     // Asigna 0 si es null
+                    data.PermiteDescuento ?? false,         // Asigna false si es null
+                    data.Descuento ?? 0,                     // Asigna 0 si es null
+                    data.MaxDescuento ?? 0,                  // Asigna 0 si es null
+                    data.Exonerar ?? false,                 // Asigna false si es null
+                    data.Codigo ?? "",                       // Asigna "" si es null
+                    data.Contacto ?? "",                     // Asigna "" si es null
+                    data.TelContacto ?? "",                  // Asigna "" si es null
+                    data.DPI ?? 0,                          // Asigna 0 si es null
+                    data.Categoria ?? 0                      // Asigna 0 si es null
+                ]
+            );
+            return response.created({ message: 'Cliente creado exitosamente' });
+        } catch (error) {
+            console.log('Error al insertar:', error); // Proporcionar un mensaje de error más claro
+            return response.internalServerError({
+                message: 'Error al crear el cliente',
+                error: error,
+            });
+        }
+    }
+
+
+
 
     // Mostrar cliente por id
     async show({ params, response }: HttpContext) {
@@ -124,6 +238,8 @@ export default class ClientesController {
             return response.internalServerError({ message: 'Error fetching clients for the location', error });
         }
     }
+
+
 
 
 

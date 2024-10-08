@@ -43,6 +43,7 @@ export default class DetallePedidosController {
             const detalle = await DetallePedidos.create(data)
             return response.created(detalle)
         } catch (error) {
+            console.log(error)
             return response.internalServerError({ message: 'Error creating order detail', error })
         }
     }

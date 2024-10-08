@@ -104,7 +104,7 @@ export default class InventariosController {
     async store({ request, response }: HttpContext) {
         const data = request.only(['Codigo', 'Barras', 'Descripcion', 'DescripcionCorta', 'Presentacion', 'CodPresent', 'CodMarca', 'CodSubCategoria',
             'SubUbicacion', 'Minima', 'Media', 'Maxima', 'Existencia', 'Observaciones', 'CodMonedaCosto', 'CostoGeneral', 'CodMonedaVenta', 'IVenta', 'UtilidadA',
-            'UtilidadB', 'UtilidadC', 'UtilidadD', 'PrecioA', 'PrecioB','PrecioC', 'PrecioD', 'PermiteDescuento', 'MaxDesc', 'FechaIngreso', 'PreguntaPrecio', 'Apartado', 'Inhabilitado', 'Servicio', 'CodProveedor',
+            'UtilidadB', 'UtilidadC', 'UtilidadD', 'PrecioA', 'PrecioB', 'PrecioC', 'PrecioD', 'PermiteDescuento', 'MaxDesc', 'FechaIngreso', 'PreguntaPrecio', 'Apartado', 'Inhabilitado', 'Servicio', 'CodProveedor',
             'Serie', 'PermiteComision', 'PorcComision', 'ProductoCompuesto', 'Consignado', 'Lote', 'CasaComercial', 'CodigoFabricante', 'NombreGenerico', 'Imagen', 'ImagenByte', 'CantMayoreo',
             'PrecioMayoreo', 'CantidadMayoreo', 'PrecioAMayoreo', 'PrecioBMayoreo', 'PrecioCMayoreo', 'PrecioDMayoreo', 'Facturable', 'PaqPorFardo', 'PrecioPorFardo', 'Editable',
             'Equivalencia1', 'Equivalencia2', 'TipoComision', 'SubUbicacion2', 'PorcDescuento', 'PrecioRef', 'PreguntaCantidad', 'NoPermiteAjuste', 'PermiteVentaNegativa'
@@ -170,6 +170,37 @@ export default class InventariosController {
         } catch (error) {
             console.error('Error al obtener el inventario:', error); // Asegúrate de que este mensaje se imprima
             return response.internalServerError({ message: 'Error al obtener el inventario', error });
+        }
+    }
+
+    async checkStock({ request, response }: HttpContext) {
+        const codigos: string[] = request.input('codigos')
+
+        if (!Array.isArray(codigos) || codigos.length === 0) {
+            return response.badRequest({ message: 'Debes enviar un arreglo de códigos de productos' })
+        }
+
+        try {
+            let existencias = []
+            if (codigos.length > 0) {
+                const placeholders = codigos.map((codigo) => `${codigo}`).join(',')
+                const query = `SELECT codigo, existencia FROM vInventario WHERE codigo IN (${placeholders})`
+
+                existencias = await db.rawQuery(query)
+            }
+
+            if (existencias.length === 0) {
+                return response.notFound({
+                    message: 'No se encontraron productos para los códigos proporcionados',
+                })
+            }
+
+            return response.ok({ productos: existencias })
+        } catch (error) {
+            return response.internalServerError({
+                message: 'Error al consultar las existencias',
+                error: error.message,
+            })
         }
     }
 }

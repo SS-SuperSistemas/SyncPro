@@ -44,6 +44,9 @@ import AjusteInventariosController from '#controllers/ajuste_inventarios_control
 import AjustesPagarsController from '#controllers/ajustes_pagars_controller'
 import ApartadosController from '#controllers/apartados_controller'
 import AperturaEfectivosController from '#controllers/apertura_efectivos_controller'
+import ArticuloBodegasController from '#controllers/articulo_bodegas_controller'
+import FelsController from '#controllers/fels_controller'
+import { middleware } from './kernel.js'
 
 router.get('/', async () => {
   return {
@@ -77,8 +80,9 @@ router
 
 router
   .group(() => {
-    router.get('/', [ClientesController, 'index'])
     router.post('/', [ClientesController, 'store'])
+    router.get('/', [ClientesController, 'index'])
+    router.post('/save', [ClientesController, 'storev2'])
     router.get('/:id', [ClientesController, 'show'])
     router.put('/:id', [ClientesController, 'updateInhabilitado'])
     router.get('/vendedor/:idAgente', [ClientesController, 'clientesPorVendedor'])
@@ -100,6 +104,7 @@ router
     router.get('/', [InventarioController, 'index'])
     router.get('/personalizado', [InventarioController, 'obtenerInventario'])
     router.post('/', [InventarioController, 'store'])
+    router.post('/checkStock', [InventarioController, 'checkStock'])
     router.get('/:id', [InventarioController, 'show'])
     router.put('/:id', [InventarioController, 'updateInhabilitado'])
   })
@@ -108,11 +113,13 @@ router
 router
   .group(() => {
     router.get('/', [PedidosController, 'index'])
-    router.post('/', [PedidosController, 'store'])
     router.get('/:id', [PedidosController, 'show'])
-    router.put('/:id', [PedidosController, 'updateAnulado'])
     router.get('/vendedor/:idVendedor', [PedidosController, 'pedidosPorVendedor'])
+    router.post('/', [PedidosController, 'store'])
+    // router.post('/save', [PedidosController, 'storev2'])
+    router.put('/:id', [PedidosController, 'updateAnulado'])
   })
+  // .use(middleware.auth())
   .prefix('pedidos')
 
 router
@@ -333,6 +340,7 @@ router
     router.get('/:id', [AjusteInventariosController, 'show'])
     router.put('/:id', [AjusteInventariosController, 'updateAnulado'])
   })
+  .use(middleware.auth())
   .prefix('ajuste_inventario')
 
 router
@@ -361,3 +369,17 @@ router
     router.get('/:id', [AperturaEfectivosController, 'show'])
   })
   .prefix('apertura_efectivo')
+
+router
+  .group(() => {
+    router.get('/', [ArticuloBodegasController, 'index'])
+    router.post('/', [ArticuloBodegasController, 'store'])
+    router.get('/:id', [ArticuloBodegasController, 'show'])
+  })
+  .prefix('articulo_bodega')
+
+  router
+  .group(() => {
+    router.get('/consultaNit/:nit', [FelsController, 'consultarNIT'])
+  })
+  .prefix('fel')

@@ -42,7 +42,7 @@ export default class DetalleRutasController {
 
     public async store({ request, response }: HttpContext) {
         try {
-            const data = request.only(['Id', 'idRuta', 'CodCliente', 'estado', 'observaciones', 'idPedido', 'inicio', 'fin'])
+            const data = request.only(['idRuta', 'CodCliente', 'estado', 'observaciones', 'idPedido', 'inicio', 'fin'])
             const registro = await DetalleRuta.create(data)
             return response.created(registro)
         } catch (error) {
