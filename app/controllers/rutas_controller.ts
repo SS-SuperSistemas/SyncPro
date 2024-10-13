@@ -1,34 +1,59 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Ruta from "#models/ruta";
-export default class RutasController{
+export default class RutasController {
 
+
+    // async index({ response }: HttpContext) {
+    //     try {
+    //         const registros = await Ruta.all()
+    //         return response.ok(registros)
+    //     } catch (error) {
+    //         console.log(error)
+    //         console.log('Error fetching routes')
+    //         return response.internalServerError({ message: 'Error fetching routes', 
+    //             error })
+    //     }
+    // }
 
     async index({ response }: HttpContext) {
         try {
-            const registros = await Ruta.all()
-            return response.ok(registros)
+            const registros = await Ruta.all();
+            // Convertir cada registro a un objeto plano y aplicar el mapeo
+            const transformedRegistros = registros.map(rutas => this.mapKeys(rutas.toJSON()));
+            return response.ok(transformedRegistros);
         } catch (error) {
-            console.log(error)
-            console.log('Error fetching routes')
-            return response.internalServerError({ message: 'Error fetching routes', 
-                error })
+            return response.internalServerError({ message: 'Error fetching orders', error });
         }
     }
 
+    private mapKeys(data: Record<string, any>): Record<string, any> {
+        return {
+            Id: data.id,
+            idVendedor: data.idVendedor, // Mapea a la forma original
+            idLocalidad: data.idLocalidad,
+            fechaInicio: data.fechaInicio,
+            fechaFin: data.fechaFin,
+            anulado: data.anulado
+        };
+    }
+
     async store({ request, response }: HttpContext) {
-        const data = request.only(['Id', 'idVendedor', 'idLocalidad', 'FechaInicio', 'FechaFin', 'Anulado'])
+        const data = request.only(['idVendedor', 'idLocalidad', 'fechaInicio', 'fechaFin', 'anulado'])
         try {
             const ruta = await Ruta.create(data)
-            return response.created(ruta)
+            console.log({ message: 'Ruta creada exitosamente', savedRoute: { Id: ruta.Id } })
+            return response.status(200).json({ message: 'Ruta creada exitosamente', savedRoute: { Id: ruta.Id } })
         } catch (error) {
-            return response.internalServerError({ message: 'Error creating route', error })
+            console.log(error)
+            return response.internalServerError({ message: 'Error al crear la ruta', error })
         }
     }
 
     async show({ params, response }: HttpContext) {
         try {
-            const ruta = await Ruta.findOrFail(params.id)
-            return response.ok(ruta)
+            const registro = await Ruta.findOrFail(params.id)
+            const transformedRegistros = this.mapKeys(registro.toJSON());
+            return response.ok(transformedRegistros)
         } catch (error) {
             return response.internalServerError({ message: 'Error fetching route', error })
         }

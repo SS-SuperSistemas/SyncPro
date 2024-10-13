@@ -13,13 +13,13 @@ export default class Ruta extends BaseModel {
   @column({ columnName: 'idLocalidad' })
   declare idLocalidad: Number
 
-  @column({ columnName: 'FechaInicio' })
+  @column({ columnName: 'fechaInicio' })
   declare FechaInicio: DateTime
 
-  @column({ columnName: 'FechaFin' })
+  @column({ columnName: 'fechaFin' })
   declare FechaFin: DateTime
 
-  @column({ columnName: 'Anulado' })
+  @column({ columnName: 'anulado' })
   declare Anulado: Boolean
 }
 

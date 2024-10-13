@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class Pedido extends BaseModel {
-static table = 'Pedidos'
+export default class Pedidos extends BaseModel {
+  static table = 'Pedidos'
 
 
   @column({ isPrimary: true, columnName: 'id' })
@@ -32,7 +32,21 @@ static table = 'Pedidos'
   @column({ columnName: 'Anulado' })
   declare Anulado: Boolean
 
-  @column({ columnName: 'IdVendedor' })
-  declare IdVendedor: Number
+  @column({ columnName: 'idVendedor' })
+  declare idVendedor: Number
 
+
+  // static proceso(data: any) {
+  //   return {
+  //     CodCliente: data.CodCliente,
+  //     Fecha: data.Fecha,
+  //     Observaciones: data.Observaciones || "",
+  //     IdUsuario: data.IdUsuario,
+  //     FechaEntrega: data.FechaEntrega,
+  //     CodMoneda: data.CodMoneda,
+  //     TipoCambio: data.TipoCambio,
+  //     Anulado: data.Anulado,
+  //     idVendedor: data.idVendedor
+  //   };
+  // }
 }

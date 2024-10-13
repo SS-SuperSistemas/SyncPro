@@ -4,7 +4,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 
-const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
+const AuthFinder = withAuthFinder(() => hash.use('bcrypt'), {
   uids: ['Nombre'],
   passwordColumnName: 'pass_user',
 })
@@ -67,8 +67,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ columnName: 'EsEncargado' })
   declare EsEncargado: Boolean
 
-  @column({ columnName: 'IdCajero' })
-  declare IdCajero: Number
+  @column({ columnName: 'IdEncargado' })
+  declare IdEncargado: Number
 
   @column({ columnName: 'pass_user' })
   declare pass_user: String
