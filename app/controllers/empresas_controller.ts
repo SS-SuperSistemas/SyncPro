@@ -51,14 +51,14 @@ export default class EmpresasController {
             FELPasswordNIT: data.felPasswordNit,
             RegimenISR: data.regimenIsr,
             AgenteRetenedor: data.agenteRetenedor,
-            
-           
+
+
         };
     }
 
     async store({ request, response }: HttpContext) {
-        const data = request.only(['Cedula', 'Empresa','NombreComercial', 'Telefono01', 'Telefono02', 'Fax01', 'Fax02', 'Direccion', 'Frase', 'Logo', 'Email', 'Web', 'Facebook', 'Info', 'FEL',
-            'FELCliente', 'FELUsuario', 'FELPassword', 'EstablecimientoFEl', 'ServidorFEL', 'RegimenFEL', 'FELPasswordNIT', 'RegimenISR', 'AgenteRetenedor',  'Imagen'])
+        const data = request.only(['Cedula', 'Empresa', 'NombreComercial', 'Telefono01', 'Telefono02', 'Fax01', 'Fax02', 'Direccion', 'Frase', 'Logo', 'Email', 'Web', 'Facebook', 'Info', 'FEL',
+            'FELCliente', 'FELUsuario', 'FELPassword', 'EstablecimientoFEl', 'ServidorFEL', 'RegimenFEL', 'FELPasswordNIT', 'RegimenISR', 'AgenteRetenedor', 'Imagen'])
         try {
             const empresa = await Empresa.create(data)
             return response.created(empresa)

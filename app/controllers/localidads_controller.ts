@@ -26,7 +26,7 @@ export default class LocalidadsController {
      */
     private mapKeys(data: Record<string, any>): Record<string, any> {
         return {
-            Id: data.id,
+            id: data.id,
             Nombre: data.nombre, // Mapea a la forma original
         };
     }

@@ -19,6 +19,7 @@ export default class AjusteCobrarsController {
             const registros = await AjusteCobrar.create(data)
             return response.created({ message: 'Record created successfully', registros })
         } catch (error) {
+            console.log(error)
             return response.internalServerError({ message: 'Error creating record', error })
         }
     }

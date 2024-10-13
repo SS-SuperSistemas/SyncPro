@@ -41,10 +41,11 @@ export default class RutasController {
         const data = request.only(['idVendedor', 'idLocalidad', 'fechaInicio', 'fechaFin', 'anulado'])
         try {
             const ruta = await Ruta.create(data)
-            return response.created(ruta)
+            console.log({ message: 'Ruta creada exitosamente', savedRoute: { Id: ruta.Id } })
+            return response.status(200).json({ message: 'Ruta creada exitosamente', savedRoute: { Id: ruta.Id } })
         } catch (error) {
             console.log(error)
-            return response.internalServerError({ message: 'Error creating route', error })
+            return response.internalServerError({ message: 'Error al crear la ruta', error })
         }
     }
 

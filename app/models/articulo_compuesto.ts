@@ -1,13 +1,19 @@
-import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 export default class ArticuloCompuesto extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+  static table = 'ArticuloCompuesto'
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
+  @column({ columnName: 'Id' })
+  declare Id: number
+
+  @column({ columnName: 'CodProductoCompuesto' })
+  declare CodProductoCompuesto: number
+
+  @column({ columnName: 'CodProducto' })
+  declare CodProducto: number
+
+  @column({ columnName: 'Cantidad' })
+  declare Cantidad: number
+
 }

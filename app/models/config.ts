@@ -65,4 +65,7 @@ static table = 'Config'
 
   @column({ columnName: 'CuentasBancarias' })
   declare CuentasBancarias: boolean
+
+  @column({ columnName: 'TipoApertura' })
+  declare CuentasCobrar: boolean
 }

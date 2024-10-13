@@ -44,7 +44,7 @@ export default class ConfigsController {
           'unicaja', 'TipoEmpresa', 'BdUnica', 'CantidadVendidaTicket', 
           'ServicioOrden', 'CuentaApertura', 'ProductoComun', 
           'ConservaTipoPrecio', 'TicketSize', 'MultiplesEstablecimientosFEL', 
-          'CuentasBancarias'
+          'CuentasBancarias', 'TipoApertura'
         ])
     
         try {

@@ -47,6 +47,10 @@ import AperturaEfectivosController from '#controllers/apertura_efectivos_control
 import ArticuloBodegasController from '#controllers/articulo_bodegas_controller'
 import FelsController from '#controllers/fels_controller'
 import { middleware } from './kernel.js'
+import ArticuloCompuestosController from '#controllers/articulo_compuestos_controller'
+import ArticuloSeriesController from '#controllers/articulo_series_controller'
+import ArticulosOrdensController from '#controllers/articulos_ordens_controller'
+import VentasCreditosController from '#controllers/ventas_creditos_controller'
 
 router.get('/', async () => {
   return {
@@ -58,15 +62,18 @@ router
   .group(() => {
     router.get('/', [MobiliariosController, 'index'])
   })
+  .use(middleware.auth())
   .prefix('mobiliario')
 
 router
   .group(() => {
     router.get('/', [AperturaCajasController, 'index'])
+    router.get('/activa/:IdUsuario', [AperturaCajasController, 'getAperturaActiva'])
     router.post('/', [AperturaCajasController, 'store'])
     router.get('/:id', [AperturaCajasController, 'show'])
     router.put('/:id', [AperturaCajasController, 'updateAnulado'])
   })
+  .use(middleware.auth())
   .prefix('apertura')
 
 router
@@ -76,18 +83,21 @@ router
     router.get('/:id', [UserController, 'show'])
     router.put('/:id', [UserController, 'updateAnulado'])
   })
+  .use(middleware.auth())
   .prefix('user')
 
 router
   .group(() => {
-    router.post('/', [ClientesController, 'store'])
     router.get('/', [ClientesController, 'index'])
-    router.post('/save', [ClientesController, 'storev2'])
     router.get('/:id', [ClientesController, 'show'])
+    router.post('/cedula', [ClientesController, 'clientesPorCedula'])
+    router.post('/save', [ClientesController, 'storev2'])
+    router.post('/', [ClientesController, 'store'])
     router.put('/:id', [ClientesController, 'updateInhabilitado'])
     router.get('/vendedor/:idAgente', [ClientesController, 'clientesPorVendedor'])
     router.get('/localidad/:idLocalidad', [ClientesController, 'clientesPorLocalidad'])
   })
+  // .use(middleware.auth())
   .prefix('cliente')
 
 router
@@ -97,6 +107,7 @@ router
     router.get('/:id', [VendedoresController, 'show'])
     router.put('/:id', [VendedoresController, 'updateInhabilitado'])
   })
+  .use(middleware.auth())
   .prefix('vendedor')
 
 router
@@ -108,6 +119,7 @@ router
     router.get('/:id', [InventarioController, 'show'])
     router.put('/:id', [InventarioController, 'updateInhabilitado'])
   })
+  .use(middleware.auth())
   .prefix('inventario')
 
 router
@@ -119,7 +131,7 @@ router
     // router.post('/save', [PedidosController, 'storev2'])
     router.put('/:id', [PedidosController, 'updateAnulado'])
   })
-  // .use(middleware.auth())
+  .use(middleware.auth())
   .prefix('pedidos')
 
 router
@@ -378,7 +390,43 @@ router
   })
   .prefix('articulo_bodega')
 
-  router
+router
+  .group(() => {
+    router.get('/', [ArticuloCompuestosController, 'index'])
+    router.post('/', [ArticuloCompuestosController, 'store'])
+    router.get('/:id', [ArticuloCompuestosController, 'show'])
+  })
+  .prefix('articulo_compuesto')
+
+router
+  .group(() => {
+    router.get('/', [ArticuloSeriesController, 'index'])
+    router.post('/', [ArticuloSeriesController, 'store'])
+    router.get('/:id', [ArticuloSeriesController, 'show'])
+    router.put('/:id', [ArticuloSeriesController, 'updateActiva'])
+  })
+  .prefix('articulo_serie')
+
+router
+  .group(() => {
+    router.get('/', [ArticulosOrdensController, 'index'])
+    router.post('/', [ArticulosOrdensController, 'store'])
+    router.get('/:id', [ArticulosOrdensController, 'show'])
+  })
+  .prefix('articulos_orden')
+
+router
+  .group(() => {
+    router.get('/', [VentasCreditosController, 'index'])
+    router.post('/save', [VentasCreditosController, 'storev2'])
+    router.post('/', [VentasCreditosController, 'store'])
+    router.get('/:id', [VentasCreditosController, 'show'])
+  })
+  .prefix('ventas_creditos')
+
+
+
+router
   .group(() => {
     router.get('/consultaNit/:nit', [FelsController, 'consultarNIT'])
   })

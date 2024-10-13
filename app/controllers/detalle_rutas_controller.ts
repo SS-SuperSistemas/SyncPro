@@ -44,10 +44,10 @@ export default class DetalleRutasController {
         try {
             const data = request.only(['idRuta', 'CodCliente', 'estado', 'observaciones', 'idPedido', 'inicio', 'fin'])
             const registro = await DetalleRuta.create(data)
-            return response.created(registro)
+            return response.status(200).json(registro)
         } catch (error) {
             console.log(error)
-            return response.internalServerError({ message: 'Error creating detail_route', error })
+            return response.internalServerError({ message: 'Error al crear el detalle ruta', error })
         }
 
     }

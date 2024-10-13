@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import AperturaCaja from '#models/apertura_caja'
+import db from '@adonisjs/lucid/services/db'
 export default class AperturaCajasController {
   async index({ response }: HttpContext) {
     try {
@@ -9,6 +10,50 @@ export default class AperturaCajasController {
       return response.internalServerError({ message: 'Error fetching clients', error })
     }
   }
+
+  //Estado de caja
+  async getAperturaActiva({ params, response }: HttpContext) {
+    const IdUsuario = params.IdUsuario
+
+    // Verificar si el parámetro idUsuario está definido
+    if (!IdUsuario) {
+        return response.badRequest({ message: 'idUsuario es requerido' })
+    }
+
+    try {
+        // Imprimir el valor de idUsuario para depurar
+        console.log('idUsuario:', IdUsuario)
+
+        // Ejecutar la consulta SQL
+        const apertura = await db
+            .rawQuery('SELECT NApertura, Cajero FROM vEstadoCaja WHERE Anulado = 0 AND Estado = ? AND IdUsuario = ?', ['A', IdUsuario])
+
+        // Verificar si se encontró una apertura
+        if (apertura.length > 0) {
+            const { NApertura, Cajero } = apertura[0]
+            return response.ok({
+                tieneApertura: true,
+                idApertura: NApertura,
+                Cajero: Cajero
+            })
+        } else {
+            return response.ok({
+                tieneApertura: false,
+                idApertura: null,
+                Cajero: null
+            })
+        }
+
+    } catch (error) {
+        return response.internalServerError({ message: 'Error ejecutando la consulta', error })
+    }
+}
+
+
+
+
+
+
 
   async store({ request, response }: HttpContext) {
     const data = request.only(['NApertura', 'Fecha', 'IdUsuario', 'Cajero', 'Observaciones', 'Anulado', 'Hora'])

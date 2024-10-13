@@ -44,8 +44,8 @@ export default class PedidosController {
         const data = request.only(['CodCliente', 'Fecha', 'Observaciones', 'IdUsuario', 'FechaEntrega', 'CodMoneda', 'TipoCambio', 'Anulado', 'idVendedor'])
         try {
             const pedido = await Pedidos.create(data)
-            console.log({ message: 'Pedido creado exitosamente', savedOrder:{id: pedido.id}})
-            return response.status(200).json({ message: 'Pedido creado exitosamente', savedOrder:{id: pedido.id} })
+            console.log({ message: 'Pedido creado exitosamente', savedOrder: { id: pedido.id } })
+            return response.status(200).json({ message: 'Pedido creado exitosamente', savedOrder: { id: pedido.id } })
 
         } catch (error) {
             console.log(error)
