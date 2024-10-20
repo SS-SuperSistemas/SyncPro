@@ -265,7 +265,7 @@ export default class ClientesController {
             // Si el cliente existe, devolver los datos del cliente
             if (clienteExistente) {
                 const transformedCliente = this.mapKeys(clienteExistente.toJSON());
-                return response.ok(transformedCliente);
+                return response.ok({cliente:transformedCliente});
             }
     
             // Si el cliente no existe, crear uno nuevo usando storev2
@@ -295,8 +295,7 @@ export default class ClientesController {
             const transformedNuevoCliente = this.mapKeys(nuevoCliente.toJSON());
     
             // Devolver los datos del cliente que se acaba de crear
-            return response.created({
-                message: 'Cliente creado exitosamente',
+            return response.ok({
                 cliente: transformedNuevoCliente
             });
         } catch (error) {

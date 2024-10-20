@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import AperturaCaja from '#models/apertura_caja'
+import Config from '#models/config'
 import db from '@adonisjs/lucid/services/db'
 export default class AperturaCajasController {
   async index({ response }: HttpContext) {
@@ -14,7 +15,7 @@ export default class AperturaCajasController {
   //Estado de caja
   async getAperturaActiva({ params, response }: HttpContext) {
     const IdUsuario = params.IdUsuario
-
+    const config = await Config.first()
     // Verificar si el parámetro idUsuario está definido
     if (!IdUsuario) {
         return response.badRequest({ message: 'idUsuario es requerido' })
@@ -26,18 +27,19 @@ export default class AperturaCajasController {
 
         // Ejecutar la consulta SQL
         const apertura = await db
-            .rawQuery('SELECT NApertura, Cajero FROM vEstadoCaja WHERE Anulado = 0 AND Estado = ? AND IdUsuario = ?', ['A', IdUsuario])
-
+            .rawQuery('SELECT NApertura, Cajero FROM vEstadoCaja WHERE (Anulado = 0) AND (Estado = ?) AND (IdUsuario = ?  )', ['A', IdUsuario])
         // Verificar si se encontró una apertura
         if (apertura.length > 0) {
             const { NApertura, Cajero } = apertura[0]
             return response.ok({
+                unicaja: config!.unicaja,
                 tieneApertura: true,
                 idApertura: NApertura,
                 Cajero: Cajero
             })
         } else {
             return response.ok({
+                unicaja: config!.unicaja,
                 tieneApertura: false,
                 idApertura: null,
                 Cajero: null
@@ -45,14 +47,10 @@ export default class AperturaCajasController {
         }
 
     } catch (error) {
+      console.log(error)
         return response.internalServerError({ message: 'Error ejecutando la consulta', error })
     }
 }
-
-
-
-
-
 
 
   async store({ request, response }: HttpContext) {

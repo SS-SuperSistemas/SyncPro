@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
-    "dev": "nodemon ace serve --hmr",
+    "dev": "nodemon --watch app/controllers/*.ts --watch app --ext ts --exec nodemon ace serve --hmr",
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -49,6 +49,7 @@
     "nodemon": "^3.1.7",
     "pino-pretty": "^11.2.2",
     "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
     "ts-node-maintained": "^10.9.4",
     "typescript": "~5.5"
   },

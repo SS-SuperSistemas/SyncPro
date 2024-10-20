@@ -2,7 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 import AbonoPagar from '#models/abono_pagar'
 import db from '@adonisjs/lucid/services/db'
 export default class AbonoPagarsController {
-
     async index({ response }: HttpContext) {
         try {
             const registros = await AbonoPagar.all()
@@ -14,21 +13,32 @@ export default class AbonoPagarsController {
 
     async store({ request, response }: HttpContext) {
         const data = request.only([
-            'Fecha', 'CodProveedor', 'IdUsuario', 'SaldoCuenta',
-            'Monto', 'SaldoActual', 'Anulado', 'CodMoneda', 'TipoCambio', 'MontoLetras',
-            'FechaEntrada', 'Observacion', 'NumRecibo', 'FondoCaja', 'IdMov' // Cambié Idbanco a IdBanco
-        ]);
+            'Fecha',
+            'CodProveedor',
+            'IdUsuario',
+            'SaldoCuenta',
+            'Monto',
+            'SaldoActual',
+            'Anulado',
+            'CodMoneda',
+            'TipoCambio',
+            'MontoLetras',
+            'FechaEntrada',
+            'Observacion',
+            'NumRecibo',
+            'FondoCaja',
+            'IdMov', // Cambié Idbanco a IdBanco
+        ])
 
         try {
-            console.log('Datos a insertar:', data); // Agregar console.log para verificar datos
+            console.log('Datos a insertar:', data) // Agregar console.log para verificar datos
 
             await db.rawQuery(
                 `INSERT INTO AbonoPagar (Fecha, CodProveedor, IdUsuario, SaldoCuenta, 
             Monto, SaldoActual, Anulado, CodMoneda, TipoCambio, MontoLetras, 
-             FechaEntrada, Observacion, NumRecibo, FondoCaja, IdMov) 
-                 VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            FechaEntrada, Observacion, NumRecibo, FondoCaja, IdMov) 
+            VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
-
                     data.Fecha,
                     data.CodProveedor,
                     data.IdUsuario,
@@ -43,18 +53,17 @@ export default class AbonoPagarsController {
                     data.Observacion,
                     data.NumRecibo,
                     data.FondoCaja,
-                    data.IdMov
-
+                    data.IdMov,
                 ]
-            );
+            )
 
-            return response.created({ message: 'Movimiento creado exitosamente' });
+            return response.created({ message: 'Movimiento creado exitosamente' })
         } catch (error) {
-            console.log('Error al insertar:', error); // Proporcionar un mensaje de error más claro
+            console.log('Error al insertar:', error) // Proporcionar un mensaje de error más claro
             return response.internalServerError({
                 message: 'Error al crear el movimiento',
-                error
-            });
+                error,
+            })
         }
     }
 
@@ -73,6 +82,4 @@ export default class AbonoPagarsController {
         await abono.save()
         return response.ok(abono)
     }
-
-
 }

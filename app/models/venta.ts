@@ -14,10 +14,10 @@ static table = 'Ventas'
   declare Tipo: String
 
   @column({ columnName: 'Fecha' })
-  declare Fecha: DateTime
+  declare Fecha: Date
 
   @column({ columnName: 'Vence' })
-  declare Vence: DateTime
+  declare Vence: Date
 
   @column({ columnName: 'CodCliente' })
   declare CodCliente: number
