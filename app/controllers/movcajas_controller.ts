@@ -27,7 +27,7 @@ export default class MovCajasController {
             await db.rawQuery(
                 `INSERT INTO MovCajas (Entrada, Monto, CodMoneda, IdUsuario, Observaciones, Anulado, 
                 NumApertura, TipoCambio, Fecha, Hora, IdBanco) 
-                 VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
 
                     data.Entrada,

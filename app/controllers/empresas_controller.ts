@@ -80,4 +80,52 @@ export default class EmpresasController {
         }
     }
 
+
+    async getImage({ params, response }: HttpContext) {
+        try {
+            const empresa = await Empresa.find(params.id)
+    
+            if (!empresa) {
+                return response.notFound({ message: 'Empresa not found' })
+            }
+    
+            if (!empresa.Logo) {
+                return response.notFound({ message: 'Imagen not found' })
+            }
+    
+            // Aquí asumes que tienes un campo adicional para el tipo de contenido
+            const contentType = this.getContentType(empresa.Logo)
+    
+            response.header('Content-Type', contentType)
+            return response.send(empresa.Logo)
+    
+        } catch (error) {
+            console.log(error)
+            return response.internalServerError({ message: 'Error fetching image', error })
+        }
+    }
+    
+    // Método para determinar el tipo de contenido
+    private getContentType(imageBuffer: Buffer): string {
+        // Dependiendo de cómo almacenes o determines el tipo de imagen, aquí puedes implementar tu lógica
+        // Por simplicidad, aquí se usan tipos comunes
+        const jpegSignature = Buffer.from([0xFF, 0xD8, 0xFF])
+        const pngSignature = Buffer.from([0x89, 0x50, 0x4E, 0x47])
+        const gifSignature = Buffer.from([0x47, 0x49, 0x46])
+        
+        if (imageBuffer.slice(0, 3).equals(jpegSignature)) {
+            return 'image/jpeg'
+        }
+        if (imageBuffer.slice(0, 8).equals(pngSignature)) {
+            return 'image/png'
+        }
+        if (imageBuffer.slice(0, 3).equals(gifSignature)) {
+            return 'image/gif'
+        }
+    
+        // Devuelve un tipo por defecto o un error si no se puede determinar
+        return 'application/octet-stream'
+    }
+    
+
 }

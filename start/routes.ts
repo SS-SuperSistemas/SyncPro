@@ -51,6 +51,10 @@ import ArticuloCompuestosController from '#controllers/articulo_compuestos_contr
 import ArticuloSeriesController from '#controllers/articulo_series_controller'
 import ArticulosOrdensController from '#controllers/articulos_ordens_controller'
 import VentasCreditosController from '#controllers/ventas_creditos_controller'
+import BodegasesController from '#controllers/bodegases_controller'
+import ArticulosProveedorsController from '#controllers/articulos_proveedors_controller'
+import TicketVentasController from '#controllers/ticket_ventas_controller'
+
 
 router.get('/', async () => {
   return {
@@ -165,14 +169,16 @@ router
     router.get('/', [EmpresasController, 'index'])
     router.post('/', [EmpresasController, 'store'])
     router.get('/1', [EmpresasController, 'show'])
+    router.get('/logo/:id', [EmpresasController, 'getImage'])
   })
   .prefix('empresa')
 
 router
   .group(() => {
     router.get('/', [VentasController, 'index'])
-    router.post('/', [VentasController, 'store'])
     router.get('/:id', [VentasController, 'show'])
+    router.post('/insertar', [VentasController, 'insertVenta'])
+    router.post('/', [VentasController, 'store'])
   })
   .prefix('venta')
 
@@ -187,8 +193,9 @@ router
 router
   .group(() => {
     router.get('/', [DetalleVentasController, 'index'])
-    router.post('/', [DetalleVentasController, 'store'])
     router.get('/:id', [DetalleVentasController, 'show'])
+    router.post('/', [DetalleVentasController, 'store'])
+    router.post('/insertar', [DetalleVentasController, 'insertDetalle'])
   })
   .prefix('detalle_venta')
 
@@ -334,6 +341,7 @@ router
     router.get('/:id', [BancosController, 'show'])
     router.put('/:id', [BancosController, 'updateInhabilitado'])
   })
+  .use(middleware.auth())
   .prefix('bancos')
 
 router
@@ -418,16 +426,36 @@ router
 router
   .group(() => {
     router.get('/', [VentasCreditosController, 'index'])
+    router.get('/:id', [VentasCreditosController, 'show'])
     router.post('/save', [VentasCreditosController, 'storev2'])
     router.post('/', [VentasCreditosController, 'store'])
-    router.get('/:id', [VentasCreditosController, 'show'])
   })
   .prefix('ventas_creditos')
-
-
 
 router
   .group(() => {
     router.get('/consultaNit/:nit', [FelsController, 'consultarNIT'])
   })
   .prefix('fel')
+
+router
+  .group(() => {
+    router.get('/', [BodegasesController, 'index'])
+    router.get('/:id', [BodegasesController, 'show'])
+    router.post('/', [BodegasesController, 'store'])
+  })
+  .prefix('bodegas')
+
+router
+  .group(() => {
+    router.get('/', [ArticulosProveedorsController, 'index'])
+    router.get('/:id', [ArticulosProveedorsController, 'show'])
+    router.post('/', [ArticulosProveedorsController, 'store'])
+  })
+  .prefix('articulos_proveedor')
+
+router
+  .group(() => {
+    router.get('/', [TicketVentasController, 'generarTicket'])
+  })
+  .prefix('ticket')

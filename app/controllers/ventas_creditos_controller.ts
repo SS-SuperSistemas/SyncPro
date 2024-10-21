@@ -46,12 +46,5 @@ export default class VentasCreditosController {
             return response.internalServerError({ message: 'Error fetching records', error })
         }
     }
-
-
-
-
-
-
-
 }
 
