@@ -53,6 +53,7 @@ import ArticulosOrdensController from '#controllers/articulos_ordens_controller'
 import VentasCreditosController from '#controllers/ventas_creditos_controller'
 import BodegasesController from '#controllers/bodegases_controller'
 import ArticulosProveedorsController from '#controllers/articulos_proveedors_controller'
+import TicketVentasController from '#controllers/ticket_ventas_controller'
 
 
 router.get('/', async () => {
@@ -437,7 +438,7 @@ router
   })
   .prefix('fel')
 
-  router
+router
   .group(() => {
     router.get('/', [BodegasesController, 'index'])
     router.get('/:id', [BodegasesController, 'show'])
@@ -452,3 +453,9 @@ router
     router.post('/', [ArticulosProveedorsController, 'store'])
   })
   .prefix('articulos_proveedor')
+
+router
+  .group(() => {
+    router.get('/', [TicketVentasController, 'generarTicket'])
+  })
+  .prefix('ticket')
